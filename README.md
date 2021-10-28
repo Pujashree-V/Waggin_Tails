@@ -28,6 +28,7 @@ Currently you can do the following activities:
 1. You can signup as a owner with localhost:8000/register
 2. You can login as owner with localhost:8000/login
 3. You can update the owner profile
-4. You can add your pets 
-5. You can signup as a volunteer with localhost:8000/registerVolunteer
-6. You can login as a volunteer with localhost:8000/loginVolunteer
+4. You can view the listed volunteers with localhost:8000/volunteers
+5. You can add your pets / delete pets
+6. You can signup as a volunteer with localhost:8000/registerVolunteer
+7. You can login as a volunteer with localhost:8000/loginVolunteer
