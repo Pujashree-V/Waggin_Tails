@@ -1,0 +1,38 @@
+{%  extends 'app_wagntails/owner_main.html' %}
+
+{% block content %}
+
+<br>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <h5>Dogs</h5>
+        </div>
+        <div class="card card-body">
+            <table class="table">
+                <tr>
+                    <th>Dog</th>
+                    <th>Owner</th>
+                    <th>Breed</th>
+                    <th>Status</th>
+                    <th>Note</th>
+                </tr>
+
+                {% for i in dogs %}
+                <tr>
+                    <td>{{i.name}}</td>
+                    <td>{{owner}}</td>
+                    <td>{{i.breed}}</td>
+                    <td>{{i.status}}</td>
+                    <td>{{i.note}}</td>
+                </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}

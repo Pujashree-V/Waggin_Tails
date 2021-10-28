@@ -1,0 +1,60 @@
+{%  extends 'app_wagntails/volunteer_main.html' %}
+
+{% block content %}
+
+<br>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <h5>Volunteer:</h5>
+            <hr>
+            <a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'accountVolunteer' %}">Update Volunteer</a>
+            {% comment %} <a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'create_dog' owner.id %}">Add
+            Dog</a> {% endcomment %}
+
+        </div>
+    </div>
+
+    <div class="col-md">
+        <div class="card card-body">
+            <h5>Contact Information</h5>
+            <hr>
+            <p>Email: {{volunteer.email}}</p>
+            <p>Phone: {{volunteer.phone}}</p>
+        </div>
+    </div>
+</div>
+
+
+<br>
+<br>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <table class="table table-sm">
+                <tr>
+                    <th>Dog</th>
+                    <th>Breed</th>
+                    <th>Status</th>
+                    <th>Note</th>
+
+                </tr>
+
+                {% for dog in dogs %}
+                <tr>
+                    <td>{{dog.name}}</td>
+                    <td>{{dog.breed}}</td>
+                    <td>{{dog.status}}</td>
+                    <td>{{dog.note}}</td>
+
+                </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

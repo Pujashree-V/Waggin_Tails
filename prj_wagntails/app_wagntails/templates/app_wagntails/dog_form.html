@@ -1,0 +1,46 @@
+{%  extends 'app_wagntails/owner_main.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-body">
+
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ form.management_form }}
+                {% for field in form %}
+                <!-- <div class="col-md-3">
+                    <div class="card card-body">
+                        <label for="{{ field.profile_pic.id_for_label }}">Dog Photo:</label>
+                        <img class="profile-pic" src="{{field.profile_pic.url}}" >
+                    </div>
+                </div> -->
+                <div class="fieldWrapper">
+                    <label for="{{ field.name.id_for_label }}">Dog Name:</label>
+                    {{ field.name }}
+                </div>
+                <div class="fieldWrapper">
+                    <label for="{{ field.breed.id_for_label }}">Dog Breed:</label>
+                    {{ field.breed }}
+                </div>
+                <div class="fieldWrapper">
+                    <label for="{{ field.status.id_for_label }}">Dog Status:</label>
+                    {{ field.status }}
+                </div>
+                <div class="fieldWrapper">
+                    <label for="{{ field.note.id_for_label }}">Notes:</label>
+                    {{ field.note }}
+                </div>
+                <hr>
+                {% endfor %}
+                <input type="submit" name="Submit">
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

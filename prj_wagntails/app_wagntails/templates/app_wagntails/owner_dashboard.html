@@ -1,0 +1,63 @@
+{%  extends 'app_wagntails/owner_main.html' %}
+
+{% block content %}
+
+{%  include 'app_wagntails/owner_status.html' %}
+
+<br>
+
+<div class="row">
+    <div class="col-md-5">
+        <h5>OWNERS:</h5>
+        <hr>
+        <div class="card card-body">
+            <a class="btn btn-primary  btn-sm btn-block" href="">Create Owner</a>
+            <table class="table table-sm">
+                <tr>
+                    <th></th>
+                    <th>Owner</th>
+                    <th>Phone</th>
+                </tr>
+
+                {% for owner in owners %}
+                <tr>
+                    <td><a class="btn btn-sm btn-info" href="{% url 'owner' owner.id %}">View</a></td>
+                    <td>{{owner.name}}</td>
+                    <td>{{owner.phone}}</td>
+                </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+
+        <div class="card card-body">
+
+            <table class="table table-sm">
+                <tr>
+                    <th>Dog</th>
+                    <th>Breed</th>
+                    <th>Status</th>
+                    <th>Note</th>
+
+                </tr>
+
+                {% for dog in dogs %}
+                <tr>
+                    <td>{{dog.name}}</td>
+                    <td>{{dog.breed}}</td>
+                    <td>{{dog.status}}</td>
+                    <td>{{dog.note}}</td>
+
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
