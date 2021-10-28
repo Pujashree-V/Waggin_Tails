@@ -139,8 +139,8 @@ def dogs(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['owner'])
 def volunteers(request, pk):
-    volunteers = Volunteer.objects.all()
     owner = Owner.objects.get(id=pk)
+    volunteers = Volunteer.objects.filter(city=owner.city)
     return render(request, 'app_wagntails/volunteers.html', {'volunteers': volunteers, 'owner': owner})
 
 

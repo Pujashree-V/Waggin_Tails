@@ -3,6 +3,7 @@ from django.core.validators import MaxValueValidator
 from django.db import models
 from django.db.models.deletion import RESTRICT
 from django_countries.fields import CountryField
+import random
 
 # Create your models here.
 
@@ -141,7 +142,7 @@ class Owner(models.Model):
     phone = models.CharField(max_length=200, null=True)
     email = models.CharField(max_length=200, null=True, unique=True)
     profile_pic = models.ImageField(default="profile1.png", null=True, blank=True)
-    aadhaar = models.PositiveIntegerField(validators=[MaxValueValidator(999999999999)], unique=True,default=000000000000)
+    aadhaar = models.PositiveIntegerField(validators=[MaxValueValidator(999999999999)], unique=True,default=random.randint(0,99999999999))
     address = models.CharField(max_length=500, null=True)
     city = models.CharField(max_length=100, null=True)
     state = models.CharField(max_length=100, null=True, choices=STATES)
@@ -173,7 +174,7 @@ class Volunteer(models.Model):
     age = models.PositiveIntegerField(validators=[MaxValueValidator(60)],default=18)
     phone = models.CharField(max_length=200, null=True)
     email = models.EmailField(max_length=200, null=True, unique=True)
-    aadhaar = models.PositiveIntegerField(validators=[MaxValueValidator(999999999999)], unique=True,default=000000000000)
+    aadhaar = models.PositiveIntegerField(validators=[MaxValueValidator(999999999999)], unique=True,default=random.randint(0,99999999999))
     address = models.CharField(max_length=500, null=True)
     city = models.CharField(max_length=100, null=True)
     state = models.CharField(max_length=100, null=True, choices=STATES)
