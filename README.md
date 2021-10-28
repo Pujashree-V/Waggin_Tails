@@ -32,3 +32,5 @@ Currently you can do the following activities:
 5. You can add your pets / delete pets
 6. You can signup as a volunteer with localhost:8000/registerVolunteer
 7. You can login as a volunteer with localhost:8000/loginVolunteer
+8. Volunteer can see the Owners and their Pets in their City
+9. Owners can see the Volunteers in their City
