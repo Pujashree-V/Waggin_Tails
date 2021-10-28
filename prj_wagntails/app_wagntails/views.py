@@ -6,7 +6,7 @@ from django.forms import inlineformset_factory
 from django.shortcuts import render, redirect
 
 from .decorators import unauthenticated_user, allowed_users, admin_only
-from .filters import DogFilter
+from .filters import DogFilter, VolunteerDogFilter
 from .forms import CreateUserForm, OwnerForm, DogForm, VolunteerForm
 # Create your views here.
 from .models import *
@@ -147,7 +147,7 @@ def volunteers(request, pk):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['owner'])
 def createDog(request, pk):
-    DogFormSet = inlineformset_factory(Owner, Dog, fields=('name', 'breed', 'status', 'note'), extra=1)
+    DogFormSet = inlineformset_factory(Owner, Dog, fields=('name', 'breed', 'status', 'city', 'note'), extra=1)
     owner = Owner.objects.get(id=pk)
     formset = DogFormSet(queryset=Dog.objects.none(), instance=owner)
     # form = OrderForm(initial={'customer':customer})
@@ -159,7 +159,7 @@ def createDog(request, pk):
             formset.save()
             return redirect('/')
 
-    context = {'form': formset}
+    context = {'form': formset, 'owner': owner}
     return render(request, 'app_wagntails/dog_form.html', context)
 
 
@@ -311,17 +311,10 @@ def volunteer(request, pk_test):
 @login_required(login_url='loginVolunteer')
 @allowed_users(allowed_roles=['volunteer'])
 def associateVolunteer(request, pk):
-    DogFormSet = inlineformset_factory(Volunteer, Dog, fields=('name', 'breed', 'status', 'note'), extra=1)
     volunteer = Volunteer.objects.get(id=pk)
-    formset = DogFormSet(queryset=Dog.objects.none(), instance=volunteer)
-    # form = OrderForm(initial={'customer':customer})
-    if request.method == 'POST':
-        # print('Printing POST:', request.POST)
-        form = DogForm(request.POST)
-        formset = DogFormSet(request.POST, instance=volunteer)
-        if formset.is_valid():
-            formset.save()
-            return redirect('/')
-
-    context = {'form': formset}
+    dogs = Dog.objects.filter(city=volunteer.city)
+    print('DOGS:', dogs)
+    for dog in dogs:
+        print('Dog City:', dog.city)
+    context = {'volunteer': volunteer, 'dogs': dogs}
     return render(request, 'app_wagntails/volunteer_dog_form.html', context)

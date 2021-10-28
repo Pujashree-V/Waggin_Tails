@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
-
+from django.db import models
 from .models import *
 
 
@@ -55,7 +55,7 @@ class VolunteerDogForm(ModelForm):
         model = Volunteer
         fields = ['name', 'dogs']
 
-    name = models.CharField(max_length=30)
+    city = models.CharField(max_length=30)
     dogs = CustomMMCF(
         queryset=Dog.objects.all(),
         widget=forms.CheckboxSelectMultiple

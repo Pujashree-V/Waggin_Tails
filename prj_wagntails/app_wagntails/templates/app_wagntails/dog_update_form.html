@@ -2,6 +2,43 @@
 {% load static %}
 {% block content %}
 
+<br>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <a class="btn btn-warning" href="{% url 'home' %}"> &#8592; Back to Profile</a>
+            <hr>
+            <h3 style="text-align: center">Account Settings</h3>
+            <hr>
+            <!--            <img class="profile-pic" src="{{request.user.owner.profile_pic.url}}">-->
+
+        </div>
+    </div>
+    <div class="col-md">
+        <div class="card card-body">
+            <h5>Owner:</h5>
+            <hr>
+            <a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'account' %}">Update Owner</a>
+            <a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'create_dog' owner.id %}">Add Dog</a>
+            <a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'volunteers' owner.id %}">Lookup
+                Volunteers</a>
+        </div>
+    </div>
+
+    <div class="col-md">
+        <div class="card card-body">
+            <h5>Contact Information</h5>
+            <hr>
+            <p>Email: {{owner.email}}</p>
+            <p>Phone: {{owner.phone}}</p>
+        </div>
+    </div>
+</div>
+
+
+<br>
+<br>
 
 <div class="row">
     <div class="col-md-6">
@@ -9,11 +46,11 @@
 
             <form action="" method="POST">
                 {% csrf_token %}
-                <div class="col-md-3">
-                    <div class="card card-body">
-                        <img class="profile-pic" src="{{dog.profile_pic.url}}" >
-                    </div>
-                </div>
+                <!--                <div class="col-md-3">-->
+                <!--                    <div class="card card-body">-->
+                <!--                        <img class="profile-pic" src="{{dog.profile_pic.url}}" >-->
+                <!--                    </div>-->
+                <!--                </div>-->
                 <div class="fieldWrapper">
                     <label for="{{ form.name.id_for_label }}">Dog Name:</label>
                     {{ form.name }}

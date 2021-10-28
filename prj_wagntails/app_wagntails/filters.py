@@ -25,3 +25,13 @@ class DogFilter(django_filters.FilterSet):
         form = DogForm
         fields = '__all__'
         exclude = ['owner', 'profile_pic']
+
+
+class VolunteerDogFilter(django_filters.FilterSet):
+    city = CharFilter(field_name='city', lookup_expr='exact')
+
+    class Meta:
+        model = Dog
+        form = VolunteerDogForm
+        fields = '__all__'
+        exclude = ['owner', 'profile_pic']

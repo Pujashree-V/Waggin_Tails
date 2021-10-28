@@ -159,6 +159,7 @@ class Dog(models.Model):
     breed = models.CharField(max_length=200, null=True, choices=BREED)
     year = models.DateTimeField(auto_now_add=True, null=True)
     status = models.CharField(max_length=200, null=True, choices=STATUS)
+    city = models.CharField(max_length=100, null=True)
     note = models.CharField(max_length=1000, null=True)
     gender = models.CharField(max_length=200, null=True, choices=GENDER)
     profile_pic = models.ImageField(default="logo.jpeg", null=True, blank=True)
