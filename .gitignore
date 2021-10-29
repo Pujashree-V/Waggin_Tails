@@ -1,4 +1,5 @@
 env/
+prj_wagntails/env
 prj_wagntails/__pycache__
 prj_wagntails/app_wagntails/management/__pycache__
 prj_wagntails/app_wagntails/management/commands/__pycache__
