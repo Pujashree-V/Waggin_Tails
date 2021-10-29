@@ -1,0 +1,46 @@
+{%  extends 'app_wagntails/owner_main.html' %}
+{% load static %}
+{% block content %}
+
+<br>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-body">
+
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="fieldWrapper">
+                    <label for="{{ form.street1.id_for_label }}">Stree 1:</label>
+                    {{ form.street1 }}
+                </div>
+                <div class="fieldWrapper">
+                    <label for="{{ form.street2.id_for_label }}">Street 2:</label>
+                    {{ form.street2 }}
+                </div>
+                <div class="fieldWrapper">
+                    <label for="{{ form.city.id_for_label }}">City :</label>
+                    {{ form.city }}
+                </div>
+                <div class="fieldWrapper">
+                    <label for="{{ form.state.id_for_label }}">State :</label>
+                    {{ form.state }}
+                </div>
+                <div class="fieldWrapper">
+                    <label for="{{ form.country.id_for_label }}">Country :</label>
+                    {{ form.country }}
+                </div>
+                <div class="fieldWrapper">
+                    <label for="{{ form.postal_code.id_for_label }}">Postal Code:</label>
+                    {{ form.postal_code }}
+                </div>
+                <hr>
+                <input type="submit" name="Update">
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

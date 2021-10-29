@@ -196,7 +196,7 @@ class DateLocation(models.Model):
     city = models.CharField(max_length=30)
     state = models.CharField(max_length=30)
     country = CountryField()
-    pincode = models.PositiveIntegerField()
+    postal_code = models.PositiveIntegerField(validators=[MaxValueValidator(999999)],default=000000)
 
 
 class PlayDate(models.Model):

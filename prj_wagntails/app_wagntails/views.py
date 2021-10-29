@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect
 
 from .decorators import unauthenticated_user, allowed_users, admin_only
 from .filters import DogFilter, VolunteerDogFilter
-from .forms import CreateUserForm, OwnerForm, DogForm, VolunteerForm
+from .forms import CreateUserForm, OwnerForm, DogForm, VolunteerForm, DateLocationForm
 # Create your views here.
 from .models import *
 
@@ -167,13 +167,13 @@ def createDog(request, pk):
 @allowed_users(allowed_roles=['owner'])
 def updateDog(request, pk):
     dog = Dog.objects.get(id=pk)
-    form = DogForm(instance=dog)
+    form = DogForm(request.POST or None, instance=dog)
     print('DOG:', dog)
     if request.method == 'POST':
-
-        form = DogForm(request.POST, instance=dog)
         if form.is_valid():
-            form.save()
+            form.save(commit=False)
+            dog.owner = request.owner
+            dog.save()
             return redirect('/')
 
     context = {'form': form, 'dog': dog}
@@ -190,6 +190,48 @@ def deleteDog(request, pk):
 
     context = {'item': dog}
     return render(request, 'app_wagntails/dog_delete.html', context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['owner'])
+def addDateLocation(request, pk):
+    owner = Owner.objects.get(id=pk)
+    form = DateLocationForm(request.POST)
+    if request.method == 'POST':
+
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+
+    context = {'form': form, 'owner': owner}
+    return render(request, 'app_wagntails/date_location.html', context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['owner'])
+def updateDateLocation(request, pk):
+    dateLocation = DateLocation.objects.get(id=pk)
+    form = DateLocationForm(request.POST or None, instance=dateLocation)
+    if request.method == 'POST':
+
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+
+    context = {'form': form, 'location': dateLocation}
+    return render(request, 'app_wagntails/update_location.html', context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['owner'])
+def deleteDateLocation(request, pk):
+    dateLocation = DateLocation.objects.get(id=pk)
+    if request.method == "POST":
+        dateLocation.delete()
+        return redirect('/')
+
+    context = {'datelocation': dateLocation}
+    return render(request, 'app_wagntails/date_location_delete.html', context)
 
 
 ################### Volunteer Related Methods ########################

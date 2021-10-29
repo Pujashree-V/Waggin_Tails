@@ -19,6 +19,9 @@ urlpatterns = [
     path('create_dog/<str:pk>/', views.createDog, name="create_dog"),
     path('update_dog/<str:pk>/', views.updateDog, name="update_dog"),
     path('delete_dog/<str:pk>/', views.deleteDog, name="delete_dog"),
+    path('addlocation/<str:pk>/' ,views.addDateLocation, name="date-location"),
+    path('updatelocation/<str:pk>/' ,views.updateDateLocation, name="update-location"),
+    path('deletelocation/<str:pk>/' ,views.deleteDateLocation, name="delete-location"),
 
     ########### Volunteer Related ##########
     path('registerVolunteer/', views.registerVolunteerPage, name="registerVolunteer"),

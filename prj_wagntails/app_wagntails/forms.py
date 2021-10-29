@@ -60,3 +60,8 @@ class VolunteerDogForm(ModelForm):
         queryset=Dog.objects.all(),
         widget=forms.CheckboxSelectMultiple
     )
+
+class DateLocationForm(ModelForm):
+    class Meta:
+        model = DateLocation
+        fields = '__all__'
