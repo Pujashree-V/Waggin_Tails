@@ -34,3 +34,5 @@ Currently you can do the following activities:
 7. You can login as a volunteer with localhost:8000/loginVolunteer
 8. Volunteer can see the Owners and their Pets in their City
 9. Owners can see the Volunteers in their City
+10. Owners can see pets in their area
+11. Owners can add playdate location
