@@ -12,7 +12,7 @@ urlpatterns = [
 
     path('account/', views.accountSettings, name="account"),
 
-    path('dogs/', views.dogs, name='dogs'),
+    path('dogs/<str:pk>/', views.dogs, name='dogs'),
     path('owner/<str:pk_test>/', views.owner, name="owner"),
     path('viewVolunteers/<str:pk>/', views.volunteers, name="volunteers"),
 

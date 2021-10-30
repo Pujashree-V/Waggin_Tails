@@ -130,9 +130,9 @@ def owner(request, pk_test):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['owner'])
-def dogs(request):
-    dogs = Dog.objects.all()
-    owner = Dog.objects.first().owner.name
+def dogs(request, pk):
+    owner = Owner.objects.get(id=pk)
+    dogs = Dog.objects.filter(city=owner.city)
     return render(request, 'app_wagntails/dogs.html', {'dogs': dogs, 'owner': owner})
 
 
