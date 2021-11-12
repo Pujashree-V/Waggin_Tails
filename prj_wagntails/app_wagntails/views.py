@@ -7,9 +7,15 @@ from django.shortcuts import render, redirect
 
 from .decorators import unauthenticated_user, allowed_users, admin_only
 from .filters import DogFilter, VolunteerDogFilter
-from .forms import CreateUserForm, OwnerForm, DogForm, VolunteerForm, DateLocationForm
-# Create your views here.
+from .forms import CreateUserForm, OwnerForm, DogForm, VolunteerForm, DateLocationForm, DogUpdateForm
 from .models import *
+from django.contrib.auth.models import User                                # Django Build in User Model
+from django.http.response import HttpResponseServerError, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.parsers import JSONParser
+from app_wagntails.models import Message   
+from app_wagntails.serializers import MessageSerializer, UserSerializer                                                 # Our Message model
+# Create your views here.
 
 
 @unauthenticated_user
@@ -35,7 +41,7 @@ def registerPage(request):
             return redirect('login')
 
     context = {'form': form}
-    return render(request, 'app_wagntails/register.html', context)
+    return render(request, 'app_wagntails/register_owner.html', context)
 
 
 @unauthenticated_user
@@ -53,7 +59,7 @@ def loginPage(request):
             messages.info(request, 'Username OR password is incorrect')
 
     context = {}
-    return render(request, 'app_wagntails/login.html', context)
+    return render(request, 'app_wagntails/loginOwner.html', context)
 
 
 def logoutUser(request):
@@ -75,7 +81,7 @@ def ownerPage(request):
 
     context = {'dogs': dogs, 'owner': owner, 'total_dogs': total_dogs,
                'sheltered': sheltered, 'forwalk': forwalk}
-    return render(request, 'app_wagntails/owner.html', context)
+    return render(request, 'app_wagntails/owner_landingPage.html', context)
 
 
 @login_required(login_url='login')
@@ -89,11 +95,11 @@ def accountSettings(request):
         if form.is_valid():
             form.save()
 
-    context = {'form': form}
+    context = {'form': form,'owner':owner}
     return render(request, 'app_wagntails/owner_account_settings.html', context)
 
 
-@login_required(login_url='login')
+@login_required(login_url='baseLogin')
 @admin_only
 def home(request):
     dogs = Dog.objects.all()
@@ -112,6 +118,12 @@ def home(request):
     return render(request, 'app_wagntails/owner_dashboard.html', context)
 
 
+@unauthenticated_user
+def baseLogin(request):
+    return render(request, 'app_wagntails/baseLogin.html')
+
+
+
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def owner(request, pk_test):
@@ -125,7 +137,7 @@ def owner(request, pk_test):
 
     context = {'owner': owner, 'dogs': dogs, 'dog_count': dog_count,
                'myFilter': myFilter}
-    return render(request, 'app_wagntails/owner.html', context)
+    return render(request, 'app_wagntails/sidebar.html', context)
 
 
 @login_required(login_url='login')
@@ -140,26 +152,27 @@ def dogs(request, pk):
 @allowed_users(allowed_roles=['owner'])
 def volunteers(request, pk):
     owner = Owner.objects.get(id=pk)
-    volunteers = Volunteer.objects.filter(city=owner.city)
-    return render(request, 'app_wagntails/volunteers.html', {'volunteers': volunteers, 'owner': owner})
+    volunteers = Volunteer.objects.filter(city=owner.city )
+    context={'volunteers': volunteers, 'owner': owner}
+    return render(request, 'app_wagntails/volunteers.html',context )
 
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['owner'])
 def createDog(request, pk):
-    DogFormSet = inlineformset_factory(Owner, Dog, fields=('name', 'breed', 'status', 'city', 'note'), extra=1)
+    DogFormSet = inlineformset_factory(Owner, Dog, fields=('profile_pic','name', 'breed', 'gender','status', 'city', 'note'), extra=1)
     owner = Owner.objects.get(id=pk)
     formset = DogFormSet(queryset=Dog.objects.none(), instance=owner)
     # form = OrderForm(initial={'customer':customer})
     if request.method == 'POST':
         # print('Printing POST:', request.POST)
         form = DogForm(request.POST)
-        formset = DogFormSet(request.POST, instance=owner)
+        formset = DogFormSet(request.POST, request.FILES, instance=owner)
         if formset.is_valid():
             formset.save()
             return redirect('/')
 
-    context = {'form': formset, 'owner': owner}
+    context = {'form': formset, 'owner': owner, 'dogs': owner.dog_set.all()}
     return render(request, 'app_wagntails/dog_form.html', context)
 
 
@@ -167,16 +180,18 @@ def createDog(request, pk):
 @allowed_users(allowed_roles=['owner'])
 def updateDog(request, pk):
     dog = Dog.objects.get(id=pk)
-    form = DogForm(request.POST or None, instance=dog)
-    print('DOG:', dog)
+    owner = dog.owner
+    form = DogUpdateForm(request.POST or None, instance=dog)
+    context = {'form': form, 'dog': dog, 'owner': owner}
     if request.method == 'POST':
         if form.is_valid():
             form.save(commit=False)
-            dog.owner = request.owner
+            dog.owner = owner
             dog.save()
             return redirect('/')
-
-    context = {'form': form, 'dog': dog}
+        else:
+            return render(request,'app_wagntails/error.html',context)
+        
     return render(request, 'app_wagntails/dog_update_form.html', context)
 
 
@@ -196,6 +211,8 @@ def deleteDog(request, pk):
 @allowed_users(allowed_roles=['owner'])
 def addDateLocation(request, pk):
     owner = Owner.objects.get(id=pk)
+    locations = DateLocation.objects.filter(city=owner.city)
+    print(Owner.objects.get(id=pk))
     form = DateLocationForm(request.POST)
     if request.method == 'POST':
 
@@ -203,7 +220,7 @@ def addDateLocation(request, pk):
             form.save()
             return redirect('/')
 
-    context = {'form': form, 'owner': owner}
+    context = {'form': form, 'owner': owner,'locations':locations}
     return render(request, 'app_wagntails/date_location.html', context)
 
 
@@ -233,6 +250,29 @@ def deleteDateLocation(request, pk):
     context = {'datelocation': dateLocation}
     return render(request, 'app_wagntails/date_location_delete.html', context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['owner'])
+def addPlayDate(request, pk):
+    owner = Owner.objects.get(id=pk)
+    form = PlayDateForm(request.POST)
+    if request.method == 'POST':
+
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+
+    context = {'form': form, 'owner': owner}
+    return render(request, 'app_wagntails/playdate.html', context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['owner'])
+def error(request, pk):
+    dog = Dog.objects.get(id=pk)
+    owner = dog.owner
+    print('DOG:', dog)
+    context = {'form': form, 'dog': dog, 'owner': owner}
+    render(request, 'app_wagntails/error.html',context)
+    
 
 ################### Volunteer Related Methods ########################
 
@@ -256,7 +296,7 @@ def registerVolunteerPage(request):
 
             messages.success(request, 'Account was created for ' + username)
 
-            return redirect('login')
+            return redirect('loginVolunteer')
 
     context = {'form': form}
     return render(request, 'app_wagntails/register.html', context)
@@ -313,7 +353,7 @@ def accountSettingsVolunteer(request):
         if form.is_valid():
             form.save()
 
-    context = {'form': form}
+    context = {'form': form,'volunteer':volunteer}
     return render(request, 'app_wagntails/volunteer_account_settings.html', context)
 
 
@@ -331,7 +371,7 @@ def volunteerPage(request):
 
     context = {'dogs': dogs, 'volunteer': volunteer, 'total_dogs': total_dogs,
                'sheltered': sheltered, 'forwalk': forwalk}
-    return render(request, 'app_wagntails/volunteer.html', context)
+    return render(request, 'app_wagntails/volunteer_landingPage.html', context)
 
 
 @login_required(login_url='loginVolunteer')
@@ -352,11 +392,103 @@ def volunteer(request, pk_test):
 
 @login_required(login_url='loginVolunteer')
 @allowed_users(allowed_roles=['volunteer'])
-def associateVolunteer(request, pk):
+def associateVolunteer(request,pk):
     volunteer = Volunteer.objects.get(id=pk)
     dogs = Dog.objects.filter(city=volunteer.city)
-    print('DOGS:', dogs)
-    for dog in dogs:
-        print('Dog City:', dog.city)
-    context = {'volunteer': volunteer, 'dogs': dogs}
+    print('DOGS:', dogs,Volunteer.objects.get(id=pk))
+    context = {'dogs': dogs,'volunteer': volunteer}
     return render(request, 'app_wagntails/volunteer_dog_form.html', context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['owner'])
+def ownerDashboard(request):
+    owner = request.user.owner
+    dogs = owner.dog_set.all()
+    form = OwnerForm(instance=owner)
+
+    if request.method == 'POST':
+        form = OwnerForm(request.POST, request.FILES, instance=owner)
+        if form.is_valid():
+            form.save()
+
+    context = {'form': form,'owner':owner,'dogs':dogs}
+    return render(request, 'app_wagntails/owner_landingPage.html', context)
+
+@login_required(login_url='volunteerLogin')
+@allowed_users(allowed_roles=['volunteer'])
+def volunteerDashboard(request):
+    volunteer = request.user.volunteer
+    form = VolunteerForm(instance=volunteer)
+
+    if request.method == 'POST':
+        form = VolunteerForm(request.POST, request.FILES, instance=volunteer)
+        if form.is_valid():
+            form.save()
+
+    context = {'form': form,'volunteer':volunteer}
+    return render(request, 'app_wagntails/volunteer_landingPage.html', context)
+
+
+@csrf_exempt
+def user_list(request, pk=None):
+    """
+    List all required messages, or create a new message.
+    """
+    if request.method == 'GET':
+        if pk:
+            users = User.objects.filter(id=pk)
+        else:
+            users = User.objects.all()
+        serializer = UserSerializer(users, many=True, context={'request': request})
+        return JsonResponse(serializer.data, safe=False)
+
+    elif request.method == 'POST':
+        data = JSONParser().parse(request)
+        try:
+            user = User.objects.create_user(username=data['username'], password=data['password'])
+            User.objects.create(user=user)
+            return JsonResponse(data, status=201)
+        except Exception:
+            return JsonResponse({'error': "Something went wrong"}, status=400)
+
+
+@csrf_exempt
+def message_list(request, sender=None, receiver=None):
+    """
+    List all required messages, or create a new message.
+    """
+    if request.method == 'GET':
+        messages = Message.objects.filter(sender_id=sender, receiver_id=receiver, is_read=False)
+        serializer = MessageSerializer(messages, many=True, context={'request': request})
+        for message in messages:
+            message.is_read = True
+            message.save()
+        return JsonResponse(serializer.data, safe=False)
+
+    elif request.method == 'POST':
+        data = JSONParser().parse(request)
+        serializer = MessageSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)
+
+def chat_view(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    if request.method == "GET":
+        context = {'users': User.objects.exclude(username=request.user.username)}
+        return render(request, 'app_wagntails/volunteerChat.html',context)
+
+
+def message_view(request, sender, receiver):
+    if not request.user.is_authenticated:
+        return redirect('index')
+    if request.method == "GET":
+        return render(request, "app_wagntails/volunteerChat.html",
+                      {'users': User.objects.exclude(username=request.user.username),
+                       'receiver': User.objects.get(id=receiver),
+                       'messages': Message.objects.filter(sender_id=sender, receiver_id=receiver) |
+                                   Message.objects.filter(sender_id=receiver, receiver_id=sender)})
+
+

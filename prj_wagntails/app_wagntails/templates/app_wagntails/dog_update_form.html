@@ -1,4 +1,4 @@
-{%  extends 'app_wagntails/owner_main.html' %}
+{% extends 'app_wagntails/base.html' %}
 {% load static %}
 {% block content %}
 
@@ -8,29 +8,38 @@
     <div class="col-md-6">
         <div class="card card-body">
 
-            <form action="" method="POST">
+            <form action="" method="POST" action="" enctype="multipart/form-data">
                 {% csrf_token %}
-                <!--                <div class="col-md-3">-->
-                <!--                    <div class="card card-body">-->
-                <!--                        <img class="profile-pic" src="{{dog.profile_pic.url}}" >-->
-                <!--                    </div>-->
-                <!--                </div>-->
-                <div class="fieldWrapper">
-                    <label for="{{ form.name.id_for_label }}">Dog Name:</label>
+                <div class="col-md-3">
+                    <div class="card card-body">
+                        <img class="profile-pic" src="{{request.dog.name}}">
+                    </div>
+                </div>
+                <!--<div class="fieldWrapper">
+                    <label for="{{ form.name.id_for_label }}">Name:</label>
                     {{ form.name }}
                 </div>
                 <div class="fieldWrapper">
-                    <label for="{{ form.breed.id_for_label }}">Dog Breed:</label>
+                    <label for="{{ form.breed.id_for_label }}">Breed:</label>
                     {{ form.breed }}
                 </div>
                 <div class="fieldWrapper">
-                    <label for="{{ form.status.id_for_label }}">Dog Status:</label>
+                    <label for="{{ form.city.id_for_label }}">City:</label>
+                    {{ form.city }}
+                </div>
+                <div class="fieldWrapper">
+                    <label for="{{ form.gender.id_for_label }}">Gender:</label>
+                    {{ form.gender }}
+                </div>
+                <div class="fieldWrapper">
+                    <label for="{{ form.status.id_for_label }}">Status:</label>
                     {{ form.status }}
                 </div>
                 <div class="fieldWrapper">
                     <label for="{{ form.note.id_for_label }}">Notes:</label>
                     {{ form.note }}
-                </div>
+                </div> -->
+                {{form.as_p}}
                 <hr>
                 <input type="submit" name="Update">
             </form>
@@ -41,3 +50,21 @@
 
 
 {% endblock %}
+
+{% if form.subject.errors %}
+    <ol>
+    {% for error in form.subject.errors %}
+        <li><strong>{{ error|escape }}</strong></li>
+    {% endfor %}
+    </ol>
+{% endif %}
+
+{% for field in form %}
+    <div class="fieldWrapper">
+        {{ field.errors }}
+        {{ field.label_tag }} {{ field }}
+        {% if field.help_text %}
+        <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %}
+    </div>
+{% endfor %}

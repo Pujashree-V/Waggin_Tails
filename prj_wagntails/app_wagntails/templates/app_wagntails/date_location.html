@@ -1,81 +1,89 @@
-{%  extends 'app_wagntails/owner_main.html' %}
+{% extends 'app_wagntails/base.html' %}
 {% load static %}
 {% block content %}
 
-<br>
 
-<div class="row">
-    <div class="col-md">
-        <div class="card card-body">
-            <a class="btn btn-warning" href="{% url 'home' %}"> &#8592; Back to Profile</a>
-            <hr>
-            <h3 style="text-align: center">Account Settings</h3>
-            <hr>
-            <!--            <img class="profile-pic" src="{{request.user.owner.profile_pic.url}}">-->
-
-        </div>
-    </div>
-    <div class="col-md">
-        <div class="card card-body">
-            <h5>Owner:</h5>
-            <hr>
-            <a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'account' %}">Update Owner</a>
-            <a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'create_dog' owner.id %}">Add Dog</a>
-            <a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'volunteers' owner.id %}">Lookup
-                Volunteers</a>
-            <a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'dogs' owner.id %}">Lookup Dogs</a>
-            <a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'date-location' owner.id %}">Add Location</a>
-        </div>
-    </div>
-
-    <div class="col-md">
-        <div class="card card-body">
-            <h5>Contact Information</h5>
-            <hr>
-            <p>Email: {{owner.email}}</p>
-            <p>Phone: {{owner.phone}}</p>
-        </div>
-    </div>
-</div>
-
-
-<br>
-<br>
-
-<div class="row">
-    <div class="col-md-6">
-        <div class="card card-body">
-
-            <form action="" method="POST">
-                {% csrf_token %}
-                <div class="fieldWrapper">
-                    <label for="{{ form.street1.id_for_label }}">Stree 1:</label>
-                    {{ form.street1 }}
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- [ Main Content ] start -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Add Location</h5>
+                            </div>
+                            <div class="card-block">
+                                <form action="" method="POST">
+                                    {% csrf_token %}
+                                    <div class="fieldWrapper">
+                                        <label for="{{ form.name.id_for_label }}">Name :</label>
+                                        {{ form.name }}
+                                    </div>
+                                    <div class="fieldWrapper">
+                                        <label for="{{ form.street1.id_for_label }}">Stree 1:</label>
+                                        {{ form.street1 }}
+                                    </div>
+                                    <div class="fieldWrapper">
+                                        <label for="{{ form.street2.id_for_label }}">Street 2:</label>
+                                        {{ form.street2 }}
+                                    </div>
+                                    <div class="fieldWrapper">
+                                        <label for="{{ form.city.id_for_label }}">City :</label>
+                                        {{ form.city }}
+                                    </div>
+                                    <div class="fieldWrapper">
+                                        <label for="{{ form.state.id_for_label }}">State :</label>
+                                        {{ form.state }}
+                                    </div>
+                                    <div class="fieldWrapper">
+                                        <label for="{{ form.country.id_for_label }}">Country :</label>
+                                        {{ form.country }}
+                                    </div>
+                                    <div class="fieldWrapper">
+                                        <label for="{{ form.postal_code.id_for_label }}">Postal Code:</label>
+                                        {{ form.postal_code }}
+                                    </div>
+                                    <hr>
+                                    <input type="submit" name="Submit">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="fieldWrapper">
-                    <label for="{{ form.street2.id_for_label }}">Street 2:</label>
-                    {{ form.street2 }}
-                </div>
-                <div class="fieldWrapper">
-                    <label for="{{ form.city.id_for_label }}">City :</label>
-                    {{ form.city }}
-                </div>
-                <div class="fieldWrapper">
-                    <label for="{{ form.state.id_for_label }}">State :</label>
-                    {{ form.state }}
-                </div>
-                <div class="fieldWrapper">
-                    <label for="{{ form.country.id_for_label }}">Country :</label>
-                    {{ form.country }}
-                </div>
-                <div class="fieldWrapper">
-                    <label for="{{ form.postal_code.id_for_label }}">Postal Code:</label>
-                    {{ form.postal_code }}
-                </div>
-                <hr>
-                <input type="submit" name="Submit">
-            </form>
+                <!-- [ Main Content ] end -->
+                <div class="row">
+                    <div class="col-md">
+                        <div class="card card-body">
+                            <table class="table table-sm">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Street 1</th>
+                                    <th>Street 2</th>
+                                    <th>City</th>
+                                    <th>State</th>
+                                    <th>Zip</th>
+                                </tr>
 
+                                {% for location in locations %}
+                                <tr>
+                                    <td>{{location.name}}</td>
+                                    <td>{{location.street1}}</td>
+                                    <td>{{location.street2}}</td>
+                                    <td>{{location.city}}</td>
+                                    <td>{{location.state}}</td>
+                                    <td>{{location.postal_code}}</td>
+                                    {% comment %} <td><a class="btn btn-sm btn-info" href="{% url 'update_dog' dog.id %}">Update</a></td>
+                                    <td><a class="btn btn-sm btn-danger" href="{% url 'delete_dog' dog.id %}">Delete</a></td> {% endcomment %}
+                                </tr>
+                                {% endfor %}
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -191,12 +191,16 @@ class Volunteer(models.Model):
 
 
 class DateLocation(models.Model):
+    name = models.CharField(max_length=30)
     street1 = models.CharField(max_length=90)
     street2 = models.CharField(max_length=90)
     city = models.CharField(max_length=30)
     state = models.CharField(max_length=30)
     country = CountryField()
     postal_code = models.PositiveIntegerField(validators=[MaxValueValidator(999999)],default=000000)
+    
+    def __str__(self):
+        return self.name
 
 
 class PlayDate(models.Model):
@@ -206,3 +210,20 @@ class PlayDate(models.Model):
     owner2 = models.ForeignKey(Owner, related_name='%(class)s_owner2', on_delete=RESTRICT)
     pet1 = models.ForeignKey(Dog, related_name='%(class)s_pet1', on_delete=RESTRICT)
     pet2 = models.ForeignKey(Dog, related_name='%(class)s_pet2', on_delete=RESTRICT)
+    
+    def __str__(self):
+        return self.owner1.name + self.owner2.name + self.pet1.name + self.pet2.name + self.playDate
+
+   
+class Message(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiver')
+    message = models.CharField(max_length=1200)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.message
+
+    class Meta:
+        ordering = ('timestamp',)

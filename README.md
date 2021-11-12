@@ -11,6 +11,9 @@ from the folder waggintails
 5. Install Django support for countries -- pip install django-countries
 6. Install Django support for filters -- pip install django-filter
 7. Install Django support for Pillow -- pip install Pillow
+8. Install Django support for REST -- pip install djangorestframework 
+9. Install Django suppprt for widgets -- pip install django-widget-tweaks
+10. Install Django support for whitenoise -- pip install whitenoise
 
 Once you finish the environment to setup the application
 

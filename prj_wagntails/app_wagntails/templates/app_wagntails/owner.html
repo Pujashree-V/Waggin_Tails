@@ -1,4 +1,4 @@
-{%  extends 'app_wagntails/owner_main.html' %}
+{% extends 'app_wagntails/owner_main.html' %}
 
 {% block content %}
 
@@ -24,6 +24,7 @@
                 Volunteers</a>
             <a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'dogs' owner.id %}">Lookup Dogs</a>
             <a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'date-location' owner.id %}">Add Location</a>
+            <a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'chats' %}">Chat</a>
         </div>
     </div>
 

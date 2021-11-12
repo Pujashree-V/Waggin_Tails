@@ -36,6 +36,11 @@ class DogForm(ModelForm):
         model = Dog
         fields = '__all__'
 
+class DogUpdateForm(ModelForm):
+    class Meta:
+        model = Dog
+        fields = '__all__'
+        exclude = ['owner']
 
 class VolunteerForm(ModelForm):
     class Meta:
@@ -65,3 +70,17 @@ class DateLocationForm(ModelForm):
     class Meta:
         model = DateLocation
         fields = '__all__'
+
+
+class PlayDateForm(ModelForm):
+    class Meta:
+        model = PlayDate
+        fields = ['playDate','location','owner2','pet1','pet2']
+        exclude = ['owner1']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['location'].queryset = DateLocation.objects.all()
+        self.fields['owner2'].queryset = Owner.objects.none()
+        self.fields['pet1'].queryset = Dog.objects.none()
+        self.fields['pet2'].queryset = Dog.objects.none()

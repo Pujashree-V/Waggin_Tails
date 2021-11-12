@@ -1,0 +1,87 @@
+{% extends "app_wagntails/base.html" %}
+
+{% block title %} Page Blank {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">Owner Dashboard</h5>
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="javascript:">Owner Dahsboard Related stuff</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- [ Main Content ] start -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Hello!</h5>
+                            </div>
+                            <div class="card-block">
+                                <p>Are you in search of someone to help take your pet on walk ? Or is you pet in need of
+                                    other 4 pawed friends to play and have fun? Then you landed in the right place. Here
+                                    is the one place to take care of your and your pet's needs, to keep their tails
+                                    wagging 😁.
+
+                                    WELCOME TO WAGGIN' TAILS!!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ Main Content ] end -->
+                <div class="row">
+                    <div class="col-md">
+                        <div class="card card-body">
+                            <table class="table table-sm">
+                                <tr>
+                                    <th>Dog</th>
+                                    <th>Breed</th>
+                                    <th>Status</th>
+                                    <th>Note</th>
+                                    <th>Update</th>
+                                    <th>Remove</th>
+                                </tr>
+
+                                {% for dog in dogs %}
+                                <tr>
+                                    <td>{{dog.name}}</td>
+                                    <td>{{dog.breed}}</td>
+                                    <td>{{dog.status}}</td>
+                                    <td>{{dog.note}}</td>
+                                    <td><a class="btn btn-sm btn-info" href="{% url 'update_dog' dog.id %}">Update</a></td>
+                                    <td><a class="btn btn-sm btn-danger" href="{% url 'delete_dog' dog.id %}">Delete</a></td>
+                                </tr>
+                                {% endfor %}
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
