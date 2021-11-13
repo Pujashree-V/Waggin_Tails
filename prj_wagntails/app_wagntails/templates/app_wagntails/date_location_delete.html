@@ -1,4 +1,4 @@
-{%  extends 'app_wagntails/owner_main.html' %}
+{%  extends 'app_wagntails/base.html' %}
 {% load static %}
 {% block content %}
 
@@ -8,9 +8,9 @@
         <div class="card card-body">
 
 
-            <p>Are you sure you want to delete Location: "{{datelocation.street1}}"?</p>
+            <p>Are you sure you want to delete Location: "{{datelocation.name}}"?</p>
 
-            <form action="{% url 'delete-location' datelocation.id  %}" method="POST">
+            <form action="{% url 'delete-location' datelocation.id owner.id %}" method="POST">
 
                 {% csrf_token %}
                 <a class="btn btn-warning" href="{% url 'home' %}">Cancel</a>

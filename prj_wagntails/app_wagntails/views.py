@@ -227,8 +227,10 @@ def addDateLocation(request, pk):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['owner'])
-def updateDateLocation(request, pk):
+def updateDateLocation(request, pk, pk_test):
     dateLocation = DateLocation.objects.get(id=pk)
+    owner = Owner.objects.get(id=pk_test)
+    locations = DateLocation.objects.filter(city=owner.city)
     form = DateLocationForm(request.POST or None, instance=dateLocation)
     if request.method == 'POST':
 
@@ -236,19 +238,20 @@ def updateDateLocation(request, pk):
             form.save()
             return redirect('/')
 
-    context = {'form': form, 'location': dateLocation}
-    return render(request, 'app_wagntails/update_location.html', context)
+    context = {'form': form, 'location': dateLocation, 'owner':owner,'locations':locations}
+    return render(request, 'app_wagntails/date_location_update.html', context)
 
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['owner'])
-def deleteDateLocation(request, pk):
+def deleteDateLocation(request, pk, pk_test):
     dateLocation = DateLocation.objects.get(id=pk)
+    owner = Owner.objects.get(id=pk_test)
     if request.method == "POST":
         dateLocation.delete()
         return redirect('/')
 
-    context = {'datelocation': dateLocation}
+    context = {'datelocation': dateLocation, 'owner': owner}
     return render(request, 'app_wagntails/date_location_delete.html', context)
 
 @login_required(login_url='login')
@@ -405,6 +408,7 @@ def associateVolunteer(request,pk):
 def ownerDashboard(request):
     owner = request.user.owner
     dogs = owner.dog_set.all()
+    locations = DateLocation.objects.filter(city=owner.city)
     form = OwnerForm(instance=owner)
 
     if request.method == 'POST':
@@ -412,7 +416,7 @@ def ownerDashboard(request):
         if form.is_valid():
             form.save()
 
-    context = {'form': form,'owner':owner,'dogs':dogs}
+    context = {'form': form,'owner':owner,'dogs':dogs, 'locations':locations}
     return render(request, 'app_wagntails/owner_landingPage.html', context)
 
 @login_required(login_url='volunteerLogin')

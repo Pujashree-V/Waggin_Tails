@@ -25,8 +25,8 @@ urlpatterns = [
     path('update_dog/<str:pk>/', views.updateDog, name="update_dog"),
     path('delete_dog/<str:pk>/', views.deleteDog, name="delete_dog"),
     path('addlocation/<str:pk>/' ,views.addDateLocation, name="date-location"),
-    path('updatelocation/<str:pk>/' ,views.updateDateLocation, name="update-location"),
-    path('deletelocation/<str:pk>/' ,views.deleteDateLocation, name="delete-location"),
+    path('updatelocation/<str:pk>/<str:pk_test>' ,views.updateDateLocation, name="update-location"),
+    path('deletelocation/<str:pk>/<str:pk_test>' ,views.deleteDateLocation, name="delete-location"),
     path('addplaydate/<str:pk>/' ,views.addPlayDate, name="play-date"),
     path('error/<str:pk>/' ,views.error, name="error"),
 
