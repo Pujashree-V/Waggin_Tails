@@ -62,7 +62,7 @@
                                     <th>Street 1</th>
                                     <th>Street 2</th>
                                     <th>City</th>
-                                    <th>State</th>
+
                                     <th>Zip</th>
                                 </tr>
 
@@ -72,10 +72,14 @@
                                     <td>{{location.street1}}</td>
                                     <td>{{location.street2}}</td>
                                     <td>{{location.city}}</td>
-                                    <td>{{location.state}}</td>
+
                                     <td>{{location.postal_code}}</td>
-                                    <td><a class="btn btn-sm btn-info" href="{% url 'update-location' location.id owner.id %}" target="_blank">Update</a></td>
-                                    <td><a class="btn btn-sm btn-danger" href="{% url 'delete-location' location.id owner.id %}" target="_blank">Delete</a></td>
+                                    <td><a class="btn btn-sm btn-info"
+                                            href="{% url 'update-location' location.id owner.id %}"
+                                            target="_blank">Update</a></td>
+                                    <td><a class="btn btn-sm btn-danger"
+                                            href="{% url 'delete-location' location.id owner.id %}"
+                                            target="_blank">Delete</a></td>
                                 </tr>
                                 {% endfor %}
 

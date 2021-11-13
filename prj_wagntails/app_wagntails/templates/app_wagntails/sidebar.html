@@ -56,8 +56,8 @@
                 <li data-username="Sample Page" class="nav-item"><a href="{% url 'date-location' owner.id %}"
                         class="nav-link"><span class="pcoded-micon"><i class="feather icon-sidebar"></i></span><span
                             class="pcoded-mtext">Add Location</span></a></li>
-                <li data-username="Sample Page" class="nav-item"><a href="{% url 'chats' %}" class="nav-link"><span
-                            class="pcoded-micon"><i class="feather icon-sidebar"></i></span><span
+                <li data-username="Sample Page" class="nav-item"><a href="{% url 'chats' owner.id%}"
+                        class="nav-link"><span class="pcoded-micon"><i class="feather icon-sidebar"></i></span><span
                             class="pcoded-mtext">Chat</span></a></li>
             </ul>
         </div>

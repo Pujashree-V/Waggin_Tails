@@ -1,9 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <title>
-        Django Datta Able - {% block title %}{% endblock %} | AppSeed
+        Waggin'Tails
     </title>
     <!-- HTML5 Shim and Respond.js IE10 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -26,11 +27,14 @@
     <!-- Favicon icon -->
 
     <!-- fontawesome icon -->
-    <link rel="stylesheet" href="../../static/fonts/fontawesome/css/fontawesome-all.min.css">
+
+    <link rel="stylesheet" href="{% static 'fonts/fontawesome/css/fontawesome-all.min.css'%}">
     <!-- animation css -->
-    <link rel="stylesheet" href="../../static/plugins/animation/css/animate.min.css">
-    <!-- vendor css -->
-    <link rel="stylesheet" href="../../static/css/sidebar.css">
+
+    <link rel="stylesheet" href="{% static 'plugins/animation/css/animate.min.css'%}">
+    <!-- href="{% static 'css/bootstrap.css' %} -->
+
+    <link rel="stylesheet" href="{% static 'css/sidebar.css'%}">
 
     <!-- Specific CSS goes HERE -->
     {% block stylesheets %}{% endblock stylesheets %}
@@ -38,7 +42,7 @@
 </head>
 
 <body>
-    {% load static %}
+
 
     <!-- [ Pre-loader ] start -->
     <!-- <div class="loader-bg">

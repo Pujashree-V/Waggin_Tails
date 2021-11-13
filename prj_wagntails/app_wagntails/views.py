@@ -1,3 +1,4 @@
+import re
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -7,14 +8,15 @@ from django.shortcuts import render, redirect
 
 from .decorators import unauthenticated_user, allowed_users, admin_only
 from .filters import DogFilter, VolunteerDogFilter
-from .forms import CreateUserForm, OwnerForm, DogForm, VolunteerForm, DateLocationForm, DogUpdateForm
+from .forms import CreateUserForm, OwnerForm, DogForm, PlayDateForm, VolunteerForm, DateLocationForm, DogUpdateForm, chatMessageForm
 from .models import *
 from django.contrib.auth.models import User                                # Django Build in User Model
 from django.http.response import HttpResponseServerError, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from app_wagntails.models import Message   
-from app_wagntails.serializers import MessageSerializer, UserSerializer                                                 # Our Message model
+from app_wagntails.serializers import MessageSerializer, UserSerializer   
+import json                                              # Our Message model
 # Create your views here.
 
 
@@ -462,7 +464,10 @@ def message_list(request, sender=None, receiver=None):
     """
     List all required messages, or create a new message.
     """
+    print("i am in message list")
+    context={'request': request}
     if request.method == 'GET':
+        print('I am in message list get')
         messages = Message.objects.filter(sender_id=sender, receiver_id=receiver, is_read=False)
         serializer = MessageSerializer(messages, many=True, context={'request': request})
         for message in messages:
@@ -471,29 +476,68 @@ def message_list(request, sender=None, receiver=None):
         return JsonResponse(serializer.data, safe=False)
 
     elif request.method == 'POST':
+        print('I am in message list post')
+        
         data = JSONParser().parse(request)
+
         serializer = MessageSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
+        
+        return render(request,'app_wagntails/error.html',context)
+    
+        
 
-def chat_view(request):
+def chat_view(request,pk):
+    owner=Owner.objects.get(id=pk)
+    users = User.objects.exclude(username=request.user.username)
+    context = {'users': users,'owner':owner}
     if not request.user.is_authenticated:
         return redirect('login')
+    if request.method == "GET": 
+        return render(request, 'app_wagntails/chatUi.html',context)
+    
+
+
+def message_view(request, sender, receiver,pk):
+    print("i am in message view")
+    print(sender)
+    print(receiver)
+    owner = Owner.objects.get(id=pk)
+    receiver = User.objects.get(id=receiver)
+    sender = User.objects.get(id=sender)
+    message = "test"
+    users = User.objects.exclude(username=request.user.username)
+    messages = Message.objects.filter(sender_id=sender, receiver_id=receiver) | Message.objects.filter(sender_id=receiver, receiver_id=sender)       
+    context = {'users': users,'owner':owner,'messages':messages,'receiver':receiver}
+    form = chatMessageForm(request.POST)
     if request.method == "GET":
-        context = {'users': User.objects.exclude(username=request.user.username)}
-        return render(request, 'app_wagntails/volunteerChat.html',context)
+        print('im in get')
+        return render(request, "app_wagntails/messages.html", context)
+    if request.method == "POST":
+        print('im in post')
+        if form.is_valid():
+            form.save()
+            message = Message.objects.filter(sender_id=sender, receiver_id=receiver) | Message.objects.filter(sender_id=receiver, receiver_id=sender) 
+            context = {'users': users,'owner':owner,'message':message,'receiver':receiver,'sender':sender}
+            return render(request, "app_wagntails/messages.html", context)
+        return render(request, "app_wagntails/messages.html", context)
 
 
-def message_view(request, sender, receiver):
-    if not request.user.is_authenticated:
-        return redirect('index')
-    if request.method == "GET":
-        return render(request, "app_wagntails/volunteerChat.html",
-                      {'users': User.objects.exclude(username=request.user.username),
-                       'receiver': User.objects.get(id=receiver),
-                       'messages': Message.objects.filter(sender_id=sender, receiver_id=receiver) |
-                                   Message.objects.filter(sender_id=receiver, receiver_id=sender)})
+@allowed_users(allowed_roles=['owner','volunteer'])
+def chatMessageSubmit(request,sender,receiver,pk):
+    owner = Owner.objects.get(id=pk)
+    receiver = User.objects.get(id=receiver)
+    sender = User.objects.get(id=sender)
+    users = User.objects.exclude(username=request.user.username)      
+    
+    form = chatMessageForm(request.POST)
+    if request.method == 'POST':
 
+        if form.is_valid():
+            form.save()
+            message = Message.objects.filter(sender_id=sender, receiver_id=receiver) | Message.objects.filter(sender_id=receiver, receiver_id=sender) 
+            context = {'users': users,'owner':owner,'message':message,'receiver':receiver,'sender':sender}
+            return render(request,'/',context)
 

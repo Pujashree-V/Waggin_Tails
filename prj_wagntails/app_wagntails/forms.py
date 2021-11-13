@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.db.models import fields
 from django.forms import ModelForm
 from django.db import models
 from .models import *
@@ -84,3 +85,9 @@ class PlayDateForm(ModelForm):
         self.fields['owner2'].queryset = Owner.objects.none()
         self.fields['pet1'].queryset = Dog.objects.none()
         self.fields['pet2'].queryset = Dog.objects.none()
+
+class chatMessageForm(ModelForm):
+    class Meta:
+        model = Message
+        fields = ['sender','receiver','message']
+        exclude = ['timestamp','is_read']
