@@ -199,11 +199,12 @@ def updateDog(request, pk):
 @allowed_users(allowed_roles=['owner'])
 def deleteDog(request, pk):
     dog = Dog.objects.get(id=pk)
+    owner = dog.owner
     if request.method == "POST":
         dog.delete()
         return redirect('/')
 
-    context = {'item': dog}
+    context = {'item': dog, 'owner': owner}
     return render(request, 'app_wagntails/dog_delete.html', context)
 
 

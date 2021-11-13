@@ -25,3 +25,8 @@ urlpatterns = [
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = "prj_wagntails.views.error_404"
+handler500 = 'prj_wagntails.views.error_500'
+handler403 = 'prj_wagntails.views.error_403'
+handler400 = 'prj_wagntails.views.error_400'
