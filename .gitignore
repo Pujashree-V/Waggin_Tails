@@ -6,3 +6,5 @@ prj_wagntails/app_wagntails/management/commands/__pycache__
 prj_wagntails/app_wagntails/migrations
 prj_wagntails/db.sqlite3
 prj_wagntails/app_wagntails/__pycache__
+prj_wagntails/prj_wagntails/app_wagntails/__pycache__
+prj_wagntails/app_wagntails/__pycache__
