@@ -497,6 +497,8 @@ def chat_view(request,pk):
         return redirect('login')
     if request.method == "GET": 
         return render(request, 'app_wagntails/chatUi.html',context)
+    else:
+        return render(request, "app_wagntails/error.html", context)
     
 
 
@@ -510,7 +512,7 @@ def message_view(request, sender, receiver,pk):
     message = "test"
     users = User.objects.exclude(username=request.user.username)
     messages = Message.objects.filter(sender_id=sender, receiver_id=receiver) | Message.objects.filter(sender_id=receiver, receiver_id=sender)       
-    context = {'users': users,'owner':owner,'messages':messages,'receiver':receiver}
+    context = {'users': users,'owner':owner,'messages':messages,'receiver':receiver,'sender':sender}
     form = chatMessageForm(request.POST)
     if request.method == "GET":
         print('im in get')
@@ -519,10 +521,13 @@ def message_view(request, sender, receiver,pk):
         print('im in post')
         if form.is_valid():
             form.save()
-            message = Message.objects.filter(sender_id=sender, receiver_id=receiver) | Message.objects.filter(sender_id=receiver, receiver_id=sender) 
-            context = {'users': users,'owner':owner,'message':message,'receiver':receiver,'sender':sender}
+            # form.sender = sender
+            # form.receiver = receiver
+            #message = Message.objects.filter(sender_id=sender, receiver_id=receiver) | Message.objects.filter(sender_id=receiver, receiver_id=sender) 
+            context = {'users': users,'owner':owner,'receiver':receiver,'sender':sender,'form':form}
             return render(request, "app_wagntails/messages.html", context)
-        return render(request, "app_wagntails/messages.html", context)
+        # else:
+        #     return render(request, "app_wagntails/error.html", context)
 
 
 @allowed_users(allowed_roles=['owner','volunteer'])

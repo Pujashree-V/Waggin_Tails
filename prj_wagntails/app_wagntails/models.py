@@ -225,5 +225,5 @@ class Message(models.Model):
     def __str__(self):
         return self.message
 
-    class Meta:
-        ordering = ('timestamp',)
+    # class Meta:
+    #     ordering = ('timestamp',)

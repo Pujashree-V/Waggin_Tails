@@ -89,5 +89,7 @@ class PlayDateForm(ModelForm):
 class chatMessageForm(ModelForm):
     class Meta:
         model = Message
-        fields = ['sender','receiver','message']
+        fields = '__all__'
+        # widgets = {'sender': forms.HiddenInput()}
+        # widgets = {'receiver': forms.HiddenInput()}
         exclude = ['timestamp','is_read']
