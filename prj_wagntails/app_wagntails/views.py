@@ -524,7 +524,8 @@ def message_view(request, sender, receiver,pk):
             # form.sender = sender
             # form.receiver = receiver
             #message = Message.objects.filter(sender_id=sender, receiver_id=receiver) | Message.objects.filter(sender_id=receiver, receiver_id=sender) 
-            context = {'users': users,'owner':owner,'receiver':receiver,'sender':sender,'form':form}
+            context = {'users': users,'owner':owner,'receiver':receiver,'sender':sender,'form':form,'messages':messages}
+            #redirect('/chat'+'/'+str(sender.id)+"/"+str(receiver.id)+"/"+str(owner.id), context)
             return render(request, "app_wagntails/messages.html", context)
         # else:
         #     return render(request, "app_wagntails/error.html", context)
