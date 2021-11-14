@@ -8,3 +8,6 @@ prj_wagntails/db.sqlite3
 prj_wagntails/app_wagntails/__pycache__
 prj_wagntails/prj_wagntails/app_wagntails/__pycache__
 prj_wagntails/app_wagntails/__pycache__
+.DS_Store
+prj_wagntails/app_wagntails/.DS_Store
+prj_wagntails/.DS_Store

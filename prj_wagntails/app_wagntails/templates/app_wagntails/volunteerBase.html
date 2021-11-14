@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,14 +26,14 @@
 
     <!-- Favicon icon -->
 
-    <!-- fontawesome icon -->
-    <link rel="stylesheet" href="../../static/fonts/fontawesome/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="{% static 'fonts/fontawesome/css/fontawesome-all.min.css'%}">
     <!-- animation css -->
-    <link rel="stylesheet" href="../../static/plugins/animation/css/animate.min.css">
-    <!-- vendor css -->
-    <link rel="stylesheet" href="../../static/css/sidebar.css">
 
-    <link rel="stylesheet" href="../../static/js/app_wagntails.js">
+    <link rel="stylesheet" href="{% static 'plugins/animation/css/animate.min.css'%}">
+    <!-- href="{% static 'css/bootstrap.css' %} -->
+
+    <link rel="stylesheet" href="{% static 'css/sidebar.css'%}">
+
 
 
     <!-- Specific CSS goes HERE -->
@@ -41,7 +42,7 @@
 </head>
 
 <body>
-    {% load static %}
+
 
     <!-- [ Pre-loader ] start -->
     <!-- <div class="loader-bg">

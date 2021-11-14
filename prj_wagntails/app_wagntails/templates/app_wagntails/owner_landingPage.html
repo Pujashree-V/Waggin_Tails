@@ -2,7 +2,15 @@
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}{% endblock stylesheets %} {% block content %}
-
+<style>
+  .dogPic {
+    height: 30px;
+    width: 30px;
+    border-radius: 50px;
+    align-items: flex-start;
+    position: relative
+  }
+</style>
 <div class="pcoded-content">
   <div class="pcoded-inner-content">
     <!-- [ breadcrumb ] start -->
@@ -46,6 +54,7 @@
                           <th>Gender</th>
                           <th>Status</th>
                           <th>Note</th>
+
                         </tr>
 
                         {% for dog in dogs %}
@@ -55,6 +64,7 @@
                           <td>{{dog.gender}}</td>
                           <td>{{dog.status}}</td>
                           <td>{{dog.note}}</td>
+                          <td><img class="dogPic" src="{{dog.profile_pic.url}}"></td>
                         </tr>
                         {% endfor %}
                       </table>
@@ -77,26 +87,26 @@
                   <div class="col-md">
                     <div class="card card-body">
                       <table class="table table-sm">
-                <tr>
-                  <th>Name</th>
-                  <th>Street 1</th>
-                  <th>Street 2</th>
-                  <th>City</th>
-                  <th>State</th>
-                  <th>Zip</th>
-                </tr>
+                        <tr>
+                          <th>Name</th>
+                          <th>Street 1</th>
+                          <th>Street 2</th>
+                          <th>City</th>
+                          <th>State</th>
+                          <th>Zip</th>
+                        </tr>
 
-                {% for location in locations %}
-                <tr>
-                  <td>{{location.name}}</td>
-                  <td>{{location.street1}}</td>
-                  <td>{{location.street2}}</td>
-                  <td>{{location.city}}</td>
-                  <td>{{location.state}}</td>
-                  <td>{{location.postal_code}}</td>
-                </tr>
-                {% endfor %}
-              </table>
+                        {% for location in locations %}
+                        <tr>
+                          <td>{{location.name}}</td>
+                          <td>{{location.street1}}</td>
+                          <td>{{location.street2}}</td>
+                          <td>{{location.city}}</td>
+                          <td>{{location.state}}</td>
+                          <td>{{location.postal_code}}</td>
+                        </tr>
+                        {% endfor %}
+                      </table>
                     </div>
                   </div>
                 </div>

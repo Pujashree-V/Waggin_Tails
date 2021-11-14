@@ -11,18 +11,17 @@
         text-align: center;
         z-index: 1;
     }
+
+    .profile-pic {
+        height: 100px;
+        width: 100px;
+        margin-left: 60px;
+        border-radius: 50px;
+    }
 </style>
 <nav class="pcoded-navbar" style="margin-top: 65px;">
     <div class="navbar-wrapper">
-        <div class="navbar-brand header-logo">
-            <a target="_blank" href="https://appseed.us/admin-dashboards/django-dashboard-dattaable" class="b-brand">
-                <div class="b-bg">
-                    <i class="feather icon-trending-up"></i>
-                </div>
-                <span class="b-title">WagnTails</span>
-            </a>
-            <a class="mobile-menu" id="mobile-collapse" href="javascript:"><span></span></a>
-        </div>
+        <img class="profile-pic" src="{{request.user.owner.profile_pic.url}}">
         <div class="navbar-content scroll-div">
             <ul class="nav pcoded-inner-navbar">
                 <li class="nav-item pcoded-menu-caption">

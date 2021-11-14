@@ -107,37 +107,40 @@
                     </div>
                     <div class="col s9">
                         <div class="card">
-                            <div id="board" class="section grey lighten-3"
-                                style="height: 68vh; padding: 5px; overflow-y: scroll">
+                            <div id="board" class="section" style="height: 68vh; padding: 5px; overflow-y: scroll;">
                                 {% block messages %}
 
                                 {% endblock %}
                             </div>
-                            {% comment %} <form id="chat-box" class="form-group {% block hide %}hide{% endblock %}" method="post"> {% endcomment %}
-                            <form action="" class="form-group {% block hide %}hide{% endblock %}" method="POST">
-                                {% csrf_token %}
-                                <div class="row">
-                                    <div class="col s11">
-                                         <div class="input-field">
-                                            <input id="message" name="message" type="text"
-                                                placeholder="Type your message..">
-                                        </div>  
-                                        {% comment %} <div class="fieldWrapper">
-                                            <label for="{{ form.message.id_for_label }}">Message :</label>
-                                            {{ form.message }}
-                                        </div>  {% endcomment %}
-                                        <input type="hidden" id="sender" name="sender" value={{sender.id}} />
-                                        <input type="hidden" id="receiver" name="receiver" value={{receiver.id}} />
-                                    </div>
-                                    <div class="col s1" style="line-height: 80px">
+                            <hr>
+                            {% comment %} <form id="chat-box" class="form-group {% block hide %}hide{% endblock %}"
+                                method="post"> {% endcomment %}
+                                <form action="" class="form-group {% block hide %}hide{% endblock %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="row" style="border: #92a095; border-width: 20px;">
+                                        <div class="col s11">
+                                            <div class="input-field">
+                                                <input id="message" name="message" type="text"
+                                                    placeholder="Type your message.." class="form-control"
+                                                    style="width: 600px;">
+                                            </div>
+                                            {% comment %} <div class="fieldWrapper">
+                                                <label for="{{ form.message.id_for_label }}">Message :</label>
+                                                {{ form.message }}
+                                            </div> {% endcomment %}
+                                            <input type="hidden" id="sender" name="sender" value={{sender.id}} />
+                                            <input type="hidden" id="receiver" name="receiver" value={{receiver.id}} />
+                                        </div>
+                                        <div class="col s1" style="line-height: 80px">
+                                            {% comment %} <button
+                                                class="btn btn-floating blue lighten-2 waves-effect waves-light"><i
+                                                    class="material-icons">send</i> send</button> {% endcomment %}
+                                            <input type="submit" name="Send" class="btn btn-primary"
+                                                style="margin-bottom: 40px;">
 
-                                         {% comment %} <button class="btn btn-floating blue lighten-2 waves-effect waves-light"><i
-                                                class="material-icons">send</i></button> {% endcomment %}
-                                        <input type="submit" name="Send">
-                                        
+                                        </div>
                                     </div>
-                                </div>
-                            </form>
+                                </form>
                         </div>
                     </div>
 

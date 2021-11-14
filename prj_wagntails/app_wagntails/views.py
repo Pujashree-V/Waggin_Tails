@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
+from django.db.models.aggregates import Max
 from django.forms import inlineformset_factory
 from django.shortcuts import render, redirect
 
@@ -10,12 +11,13 @@ from .decorators import unauthenticated_user, allowed_users, admin_only
 from .filters import DogFilter, VolunteerDogFilter
 from .forms import CreateUserForm, OwnerForm, DogForm, PlayDateForm, VolunteerForm, DateLocationForm, DogUpdateForm, chatMessageForm
 from .models import *
-from django.contrib.auth.models import User                                # Django Build in User Model
+# Django Build in User Model
+from django.contrib.auth.models import User
 from django.http.response import HttpResponseServerError, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
-from app_wagntails.models import Message   
-from app_wagntails.serializers import MessageSerializer, UserSerializer   
+from app_wagntails.models import Message
+from app_wagntails.serializers import MessageSerializer, UserSerializer
 import json                                              # Our Message model
 # Create your views here.
 
@@ -97,7 +99,7 @@ def accountSettings(request):
         if form.is_valid():
             form.save()
 
-    context = {'form': form,'owner':owner}
+    context = {'form': form, 'owner': owner}
     return render(request, 'app_wagntails/owner_account_settings.html', context)
 
 
@@ -123,7 +125,6 @@ def home(request):
 @unauthenticated_user
 def baseLogin(request):
     return render(request, 'app_wagntails/baseLogin.html')
-
 
 
 @login_required(login_url='login')
@@ -154,15 +155,16 @@ def dogs(request, pk):
 @allowed_users(allowed_roles=['owner'])
 def volunteers(request, pk):
     owner = Owner.objects.get(id=pk)
-    volunteers = Volunteer.objects.filter(city=owner.city )
-    context={'volunteers': volunteers, 'owner': owner}
-    return render(request, 'app_wagntails/volunteers.html',context )
+    volunteers = Volunteer.objects.filter(city=owner.city)
+    context = {'volunteers': volunteers, 'owner': owner}
+    return render(request, 'app_wagntails/volunteers.html', context)
 
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['owner'])
 def createDog(request, pk):
-    DogFormSet = inlineformset_factory(Owner, Dog, fields=('profile_pic','name', 'breed', 'gender','status', 'city', 'note'), extra=1)
+    DogFormSet = inlineformset_factory(Owner, Dog, fields=(
+        'profile_pic', 'name', 'breed', 'gender', 'status', 'city', 'note'), extra=1)
     owner = Owner.objects.get(id=pk)
     formset = DogFormSet(queryset=Dog.objects.none(), instance=owner)
     # form = OrderForm(initial={'customer':customer})
@@ -192,8 +194,8 @@ def updateDog(request, pk):
             dog.save()
             return redirect('/')
         else:
-            return render(request,'app_wagntails/error.html',context)
-        
+            return render(request, 'app_wagntails/error.html', context)
+
     return render(request, 'app_wagntails/dog_update_form.html', context)
 
 
@@ -223,7 +225,7 @@ def addDateLocation(request, pk):
             form.save()
             return redirect('/')
 
-    context = {'form': form, 'owner': owner,'locations':locations}
+    context = {'form': form, 'owner': owner, 'locations': locations}
     return render(request, 'app_wagntails/date_location.html', context)
 
 
@@ -240,7 +242,8 @@ def updateDateLocation(request, pk, pk_test):
             form.save()
             return redirect('/')
 
-    context = {'form': form, 'location': dateLocation, 'owner':owner,'locations':locations}
+    context = {'form': form, 'location': dateLocation,
+               'owner': owner, 'locations': locations}
     return render(request, 'app_wagntails/date_location_update.html', context)
 
 
@@ -256,6 +259,7 @@ def deleteDateLocation(request, pk, pk_test):
     context = {'datelocation': dateLocation, 'owner': owner}
     return render(request, 'app_wagntails/date_location_delete.html', context)
 
+
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['owner'])
 def addPlayDate(request, pk):
@@ -270,6 +274,7 @@ def addPlayDate(request, pk):
     context = {'form': form, 'owner': owner}
     return render(request, 'app_wagntails/playdate.html', context)
 
+
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['owner'])
 def error(request, pk):
@@ -277,8 +282,8 @@ def error(request, pk):
     owner = dog.owner
     print('DOG:', dog)
     context = {'form': form, 'dog': dog, 'owner': owner}
-    render(request, 'app_wagntails/error.html',context)
-    
+    render(request, 'app_wagntails/error.html', context)
+
 
 ################### Volunteer Related Methods ########################
 
@@ -359,7 +364,7 @@ def accountSettingsVolunteer(request):
         if form.is_valid():
             form.save()
 
-    context = {'form': form,'volunteer':volunteer}
+    context = {'form': form, 'volunteer': volunteer}
     return render(request, 'app_wagntails/volunteer_account_settings.html', context)
 
 
@@ -398,12 +403,13 @@ def volunteer(request, pk_test):
 
 @login_required(login_url='loginVolunteer')
 @allowed_users(allowed_roles=['volunteer'])
-def associateVolunteer(request,pk):
+def associateVolunteer(request, pk):
     volunteer = Volunteer.objects.get(id=pk)
     dogs = Dog.objects.filter(city=volunteer.city)
-    print('DOGS:', dogs,Volunteer.objects.get(id=pk))
-    context = {'dogs': dogs,'volunteer': volunteer}
+    print('DOGS:', dogs, Volunteer.objects.get(id=pk))
+    context = {'dogs': dogs, 'volunteer': volunteer}
     return render(request, 'app_wagntails/volunteer_dog_form.html', context)
+
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['owner'])
@@ -418,8 +424,10 @@ def ownerDashboard(request):
         if form.is_valid():
             form.save()
 
-    context = {'form': form,'owner':owner,'dogs':dogs, 'locations':locations}
+    context = {'form': form, 'owner': owner,
+               'dogs': dogs, 'locations': locations}
     return render(request, 'app_wagntails/owner_landingPage.html', context)
+
 
 @login_required(login_url='volunteerLogin')
 @allowed_users(allowed_roles=['volunteer'])
@@ -432,7 +440,7 @@ def volunteerDashboard(request):
         if form.is_valid():
             form.save()
 
-    context = {'form': form,'volunteer':volunteer}
+    context = {'form': form, 'volunteer': volunteer}
     return render(request, 'app_wagntails/volunteer_landingPage.html', context)
 
 
@@ -446,13 +454,15 @@ def user_list(request, pk=None):
             users = User.objects.filter(id=pk)
         else:
             users = User.objects.all()
-        serializer = UserSerializer(users, many=True, context={'request': request})
+        serializer = UserSerializer(
+            users, many=True, context={'request': request})
         return JsonResponse(serializer.data, safe=False)
 
     elif request.method == 'POST':
         data = JSONParser().parse(request)
         try:
-            user = User.objects.create_user(username=data['username'], password=data['password'])
+            user = User.objects.create_user(
+                username=data['username'], password=data['password'])
             User.objects.create(user=user)
             return JsonResponse(data, status=201)
         except Exception:
@@ -465,11 +475,13 @@ def message_list(request, sender=None, receiver=None):
     List all required messages, or create a new message.
     """
     print("i am in message list")
-    context={'request': request}
+    context = {'request': request}
     if request.method == 'GET':
         print('I am in message list get')
-        messages = Message.objects.filter(sender_id=sender, receiver_id=receiver, is_read=False)
-        serializer = MessageSerializer(messages, many=True, context={'request': request})
+        messages = Message.objects.filter(
+            sender_id=sender, receiver_id=receiver, is_read=False)
+        serializer = MessageSerializer(
+            messages, many=True, context={'request': request})
         for message in messages:
             message.is_read = True
             message.save()
@@ -477,32 +489,45 @@ def message_list(request, sender=None, receiver=None):
 
     elif request.method == 'POST':
         print('I am in message list post')
-        
+
         data = JSONParser().parse(request)
 
         serializer = MessageSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=201)
-        
-        return render(request,'app_wagntails/error.html',context)
-    
-        
 
-def chat_view(request,pk):
-    owner=Owner.objects.get(id=pk)
+        return render(request, 'app_wagntails/error.html', context)
+
+
+@allowed_users(allowed_roles=['owner'])
+def chat_view(request, pk):
+    owner = Owner.objects.get(id=pk)
     users = User.objects.exclude(username=request.user.username)
-    context = {'users': users,'owner':owner}
+    context = {'users': users, 'owner': owner}
     if not request.user.is_authenticated:
         return redirect('login')
-    if request.method == "GET": 
-        return render(request, 'app_wagntails/chatUi.html',context)
+    if request.method == "GET":
+        return render(request, 'app_wagntails/chatUi.html', context)
     else:
         return render(request, "app_wagntails/error.html", context)
-    
 
 
-def message_view(request, sender, receiver,pk):
+@allowed_users(allowed_roles=['volunteer'])
+def volunteer_chat_view(request, pk):
+    volunteer = Volunteer.objects.get(id=pk)
+    users = User.objects.exclude(username=request.user.username)
+    context = {'users': users, 'volunteer': volunteer}
+    if not request.user.is_authenticated:
+        return redirect('login')
+    if request.method == "GET":
+        return render(request, 'app_wagntails/volunteerChat.html', context)
+    else:
+        return render(request, "app_wagntails/error.html", context)
+
+
+@allowed_users(allowed_roles=['owner'])
+def message_view(request, sender, receiver, pk):
     print("i am in message view")
     print(sender)
     print(receiver)
@@ -511,8 +536,10 @@ def message_view(request, sender, receiver,pk):
     sender = User.objects.get(id=sender)
     message = "test"
     users = User.objects.exclude(username=request.user.username)
-    messages = Message.objects.filter(sender_id=sender, receiver_id=receiver) | Message.objects.filter(sender_id=receiver, receiver_id=sender)       
-    context = {'users': users,'owner':owner,'messages':messages,'receiver':receiver,'sender':sender}
+    messages = Message.objects.filter(sender_id=sender, receiver_id=receiver).order_by('timestamp') | Message.objects.filter(
+        sender_id=receiver, receiver_id=sender).order_by("timestamp")
+    context = {'users': users, 'owner': owner, 'messages': messages,
+               'receiver': receiver, 'sender': sender}
     form = chatMessageForm(request.POST)
     if request.method == "GET":
         print('im in get')
@@ -523,27 +550,60 @@ def message_view(request, sender, receiver,pk):
             form.save()
             # form.sender = sender
             # form.receiver = receiver
-            #message = Message.objects.filter(sender_id=sender, receiver_id=receiver) | Message.objects.filter(sender_id=receiver, receiver_id=sender) 
-            context = {'users': users,'owner':owner,'receiver':receiver,'sender':sender,'form':form,'messages':messages}
-            #redirect('/chat'+'/'+str(sender.id)+"/"+str(receiver.id)+"/"+str(owner.id), context)
+            #message = Message.objects.filter(sender_id=sender, receiver_id=receiver) | Message.objects.filter(sender_id=receiver, receiver_id=sender)
+            context = {'users': users, 'owner': owner, 'receiver': receiver,
+                       'sender': sender, 'form': form, 'messages': messages}
             return render(request, "app_wagntails/messages.html", context)
         # else:
         #     return render(request, "app_wagntails/error.html", context)
 
 
-@allowed_users(allowed_roles=['owner','volunteer'])
-def chatMessageSubmit(request,sender,receiver,pk):
+@allowed_users(allowed_roles=['volunteer'])
+def volunteer_message_view(request, sender, receiver, pk):
+    print("i am in message view")
+    print(sender)
+    print(receiver)
+    volunteer = Volunteer.objects.get(id=pk)
+    receiver = User.objects.get(id=receiver)
+    sender = User.objects.get(id=sender)
+    message = "test"
+    users = User.objects.exclude(username=request.user.username)
+    messages = Message.objects.filter(sender_id=sender, receiver_id=receiver).order_by("timestamp") | Message.objects.filter(
+        sender_id=receiver, receiver_id=sender).order_by("timestamp")
+    context = {'users': users, 'volunteer': volunteer, 'messages': messages,
+               'receiver': receiver, 'sender': sender}
+    form = chatMessageForm(request.POST)
+    if request.method == "GET":
+        print('im in get')
+        return render(request, "app_wagntails/volunteerMessages.html", context)
+    if request.method == "POST":
+        print('im in post')
+        if form.is_valid():
+            form.save()
+            # form.sender = sender
+            # form.receiver = receiver
+            #message = Message.objects.filter(sender_id=sender, receiver_id=receiver) | Message.objects.filter(sender_id=receiver, receiver_id=sender)
+            context = {'users': users, 'volunteer': volunteer, 'receiver': receiver,
+                       'sender': sender, 'form': form, 'messages': messages}
+            return render(request, "app_wagntails/volunteerMessages.html", context)
+        # else:
+        #     return render(request, "app_wagntails/error.html", context)
+
+
+@allowed_users(allowed_roles=['owner', 'volunteer'])
+def chatMessageSubmit(request, sender, receiver, pk):
     owner = Owner.objects.get(id=pk)
     receiver = User.objects.get(id=receiver)
     sender = User.objects.get(id=sender)
-    users = User.objects.exclude(username=request.user.username)      
-    
+    users = User.objects.exclude(username=request.user.username)
+
     form = chatMessageForm(request.POST)
     if request.method == 'POST':
 
         if form.is_valid():
             form.save()
-            message = Message.objects.filter(sender_id=sender, receiver_id=receiver) | Message.objects.filter(sender_id=receiver, receiver_id=sender) 
-            context = {'users': users,'owner':owner,'message':message,'receiver':receiver,'sender':sender}
-            return render(request,'/',context)
-
+            message = Message.objects.filter(sender_id=sender, receiver_id=receiver) | Message.objects.filter(
+                sender_id=receiver, receiver_id=sender)
+            context = {'users': users, 'owner': owner,
+                       'message': message, 'receiver': receiver, 'sender': sender}
+            return render(request, '/', context)
