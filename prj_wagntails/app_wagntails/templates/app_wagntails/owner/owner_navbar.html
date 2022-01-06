@@ -1,0 +1,46 @@
+{% load static %}
+
+
+<style>
+    .hello-msg {
+        font-size: 18px;
+        color: #fff;
+        margin-right: 20px;
+    }
+
+    body {
+        padding-top: 56px;
+
+    }
+
+    .fixed-top {
+        z-index: 1;
+    }
+</style>
+<nav class="navbar fixed-top  navbar-expand-lg" style="background-color: #3f4d67;">
+    <img src="{% static 'images/12.png' %}">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            {% if request.user.is_staff %}
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'home' %}">Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'dogs' %}">Dogs</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'account' %}" style="color: #fff;">Settings</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <span class="hello-msg">Hello, {{request.user}}</span>
+    <span><a class="hello-msg" href="{% url 'logout' %}">Logout</a></span>
+
+</nav>

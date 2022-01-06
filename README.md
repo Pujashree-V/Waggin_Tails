@@ -11,6 +11,9 @@ from the folder waggintails
 5. Install Django support for countries -- pip install django-countries
 6. Install Django support for filters -- pip install django-filter
 7. Install Django support for Pillow -- pip install Pillow
+8. Install Django support for REST -- pip install djangorestframework 
+9. Install Django suppprt for widgets -- pip install django-widget-tweaks
+10. Install Django support for whitenoise -- pip install whitenoise
 
 Once you finish the environment to setup the application
 
@@ -32,7 +35,3 @@ Currently you can do the following activities:
 5. You can add your pets / delete pets
 6. You can signup as a volunteer with localhost:8000/registerVolunteer
 7. You can login as a volunteer with localhost:8000/loginVolunteer
-8. Volunteer can see the Owners and their Pets in their City
-9. Owners can see the Volunteers in their City
-10. Owners can see pets in their area
-11. Owners can add playdate location

@@ -46,9 +46,7 @@ GROUPS = {
 }
 
 USERS = {
-    "my_member_user": ["customer", "sreeku.ralla@gmail.com", "Sri1@kam"],
-    "my_admin_user": ["Administration", "hemam.pidugu@gmail.com", "Sri1@kam"],
-    "Admin": ["Administration", "sneha@gmail.com", "Sri1@kam"],
+    "Admin": ["Administration", "sreeku.ralla@gmail.com", "Sri1@kam"],
 }
 
 

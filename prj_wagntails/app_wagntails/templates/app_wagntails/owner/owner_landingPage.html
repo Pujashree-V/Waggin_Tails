@@ -1,0 +1,127 @@
+{% extends "app_wagntails/owner/base.html" %} {% block title %} Page Blank {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+<style>
+  .dogPic {
+    height: 30px;
+    width: 30px;
+    border-radius: 50px;
+    align-items: flex-start;
+    position: relative
+  }
+</style>
+<div class="pcoded-content">
+  <div class="pcoded-inner-content">
+    <!-- [ breadcrumb ] start -->
+    <div class="page-header">
+      <div class="page-block">
+        <div class="row align-items-center">
+          <div class="col-md-12">
+            <div class="page-header-title">
+              <h5 class="m-b-10">Owner Dashboard</h5>
+            </div>
+            <ul class="breadcrumb">
+              <li class="breadcrumb-item">
+                <a href="/"><i class="feather icon-home"></i></a>
+              </li>
+              <li class="breadcrumb-item">
+                <a href="javascript:">Owner Dahsboard Related stuff</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- [ breadcrumb ] end -->
+    <div class="main-body">
+      <div class="page-wrapper">
+        <!-- [ Main Content ] start -->
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="card">
+              <div class="card-header">
+                <h5>Dogs</h5>
+              </div>
+              <div class="card-block">
+                <div class="row">
+                  <div class="col-md">
+                    <div class="card card-body">
+                      <table class="table table-sm">
+                        <tr>
+                          <th>Dog</th>
+                          <th>Breed</th>
+                          <th>Gender</th>
+                          <th>Status</th>
+                          <th>Note</th>
+
+                        </tr>
+
+                        {% for dog in dogs %}
+                        <tr>
+                          <td>{{dog.name}}</td>
+                          <td>{{dog.breed}}</td>
+                          <td>{{dog.gender}}</td>
+                          <td>{{dog.status}}</td>
+                          <td>{{dog.note}}</td>
+                          <td><img class="dogPic" src="{{dog.profile_pic.url}}"></td>
+                        </tr>
+                        {% endfor %}
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Dogs Table End Location List -->
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="card">
+              <div class="card-header">
+                <h5>Locations</h5>
+              </div>
+              <div class="card-block">
+                <div class="row">
+                  <div class="col-md">
+                    <div class="card card-body">
+                      <table class="table table-sm">
+                        <tr>
+                          <th>Name</th>
+                          <th>Street 1</th>
+                          <th>Street 2</th>
+                          <th>City</th>
+                          <th>State</th>
+                          <th>Zip</th>
+                        </tr>
+
+                        {% for location in locations %}
+                        <tr>
+                          <td>{{location.name}}</td>
+                          <td>{{location.street1}}</td>
+                          <td>{{location.street2}}</td>
+                          <td>{{location.city}}</td>
+                          <td>{{location.state}}</td>
+                          <td>{{location.postal_code}}</td>
+                        </tr>
+                        {% endfor %}
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Locations end -->
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

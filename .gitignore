@@ -1,7 +1,10 @@
 env/
-prj_wagntails/env
 prj_wagntails/__pycache__
+prj_wagntails/prj_wagntails/__pycache__
+prj_wagntails/app_wagntails/views/__pycache__
 prj_wagntails/app_wagntails/management/__pycache__
 prj_wagntails/app_wagntails/management/commands/__pycache__
 prj_wagntails/app_wagntails/migrations
 prj_wagntails/db.sqlite3
+.DS_Store
+

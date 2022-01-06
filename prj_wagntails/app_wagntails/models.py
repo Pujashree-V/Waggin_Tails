@@ -82,7 +82,26 @@ BREED = (
     ('GrateDane', 'GrateDane'),
 )
 
+class Person(models.Model):
+    user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200, null=True)
+    phone = models.CharField(max_length=200, null=True)
+    email = models.CharField(max_length=200, null=True, unique=True)
+    profile_pic = models.ImageField(default="profile1.png", null=True, blank=True)
+    aadhaar = models.PositiveIntegerField(validators=[MaxValueValidator(999999999999)], unique=True,default=random.randint(0,99999999999))
+   
+    address = models.CharField(max_length=500, null=True)
+    city = models.CharField(max_length=100, null=True)
+    state = models.CharField(max_length=100, null=True, choices=STATES)
+    postal_code = models.PositiveIntegerField(validators=[MaxValueValidator(999999)],default=000000)
 
+    def get_username(self):
+        return self.city
+    
+    class Meta:
+        abstract = True
+
+    
 class Customer(models.Model):
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, null=True)
@@ -135,22 +154,24 @@ class Order(models.Model):
     def __str__(self):
         return self.product.name
 
-
-class Owner(models.Model):
-    user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
-    name = models.CharField(max_length=200, null=True)
-    phone = models.CharField(max_length=200, null=True)
-    email = models.CharField(max_length=200, null=True, unique=True)
-    profile_pic = models.ImageField(default="profile1.png", null=True, blank=True)
-    aadhaar = models.PositiveIntegerField(validators=[MaxValueValidator(999999999999)], unique=True,default=random.randint(0,99999999999))
-    address = models.CharField(max_length=500, null=True)
-    city = models.CharField(max_length=100, null=True)
-    state = models.CharField(max_length=100, null=True, choices=STATES)
-    postal_code = models.PositiveIntegerField(validators=[MaxValueValidator(999999)],default=000000)
+       
+class Owner(Person):
+    # user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
+    # name = models.CharField(max_length=200, null=True)
+    # phone = models.CharField(max_length=200, null=True)
+    # email = models.CharField(max_length=200, null=True, unique=True)
+    # profile_pic = models.ImageField(default="profile1.png", null=True, blank=True)
+    # aadhaar = models.PositiveIntegerField(validators=[MaxValueValidator(999999999999)], unique=True,default=random.randint(0,99999999999))
+    # # address = models.CharField(max_length=500, null=True)
+    # city = models.CharField(max_length=100, null=True)
+    # state = models.CharField(max_length=100, null=True, choices=STATES)
+    # postal_code = models.PositiveIntegerField(validators=[MaxValueValidator(999999)],default=000000)
     is_owner = models.BooleanField(default=True)
+    
 
     def __str__(self):
         return self.name
+
 
 
 class Dog(models.Model):
@@ -168,21 +189,34 @@ class Dog(models.Model):
         return self.name
 
 
-class Volunteer(models.Model):
-    user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
-    name = models.CharField(max_length=200, null=True)
-    gender = models.CharField(max_length=20, null=True, choices=GENDER)
-    age = models.PositiveIntegerField(validators=[MaxValueValidator(60)],default=18)
-    phone = models.CharField(max_length=200, null=True)
-    email = models.EmailField(max_length=200, null=True, unique=True)
-    aadhaar = models.PositiveIntegerField(validators=[MaxValueValidator(999999999999)], unique=True,default=random.randint(0,99999999999))
-    address = models.CharField(max_length=500, null=True)
-    city = models.CharField(max_length=100, null=True)
-    state = models.CharField(max_length=100, null=True, choices=STATES)
-    postal_code = models.PositiveIntegerField(validators=[MaxValueValidator(999999)],default=000000)
+# class User(models.Model):
+#    first_name = models.CharField(max_length=255)
+
+#    def get_username(self):
+#        return self.username
+
+#    class Meta:
+#        abstract = True
+
+# class Employee(User):
+#    title = models.CharField(max_length=255)
+
+
+class Volunteer(Person):
+    # user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
+    # name = models.CharField(max_length=200, null=True)
+    # gender = models.CharField(max_length=20, null=True, choices=GENDER)
+    # age = models.PositiveIntegerField(validators=[MaxValueValidator(60)],default=18)
+    # phone = models.CharField(max_length=200, null=True)
+    # email = models.EmailField(max_length=200, null=True, unique=True)
+    # aadhaar = models.PositiveIntegerField(validators=[MaxValueValidator(999999999999)], unique=True,default=random.randint(0,99999999999))
+    # # address = models.CharField(max_length=500, null=True)
+    # city = models.CharField(max_length=100, null=True)
+    # state = models.CharField(max_length=100, null=True, choices=STATES)
+    # postal_code = models.PositiveIntegerField(validators=[MaxValueValidator(999999)],default=000000)
     day_pref = models.CharField(max_length=10, null=True, choices=DAYS)
     time_pref = models.CharField(max_length=20, null=True, choices=TIME_PREFERENCE)
-    profile_pic = models.ImageField(default="profile1.png", null=True, blank=True)
+    #profile_pic = models.ImageField(default="profile1.png", null=True, blank=True)
     is_volunteer = models.BooleanField(default=True)
     dogs = models.ManyToManyField(Dog)
 
@@ -190,13 +224,18 @@ class Volunteer(models.Model):
         return self.name
 
 
+
 class DateLocation(models.Model):
+    name = models.CharField(max_length=30)
     street1 = models.CharField(max_length=90)
     street2 = models.CharField(max_length=90)
     city = models.CharField(max_length=30)
     state = models.CharField(max_length=30)
     country = CountryField()
-    pincode = models.PositiveIntegerField()
+    postal_code = models.PositiveIntegerField(validators=[MaxValueValidator(999999)],default=000000)
+    
+    def __str__(self):
+        return self.name
 
 
 class PlayDate(models.Model):
@@ -206,3 +245,20 @@ class PlayDate(models.Model):
     owner2 = models.ForeignKey(Owner, related_name='%(class)s_owner2', on_delete=RESTRICT)
     pet1 = models.ForeignKey(Dog, related_name='%(class)s_pet1', on_delete=RESTRICT)
     pet2 = models.ForeignKey(Dog, related_name='%(class)s_pet2', on_delete=RESTRICT)
+    
+    def __str__(self):
+        return self.owner1.name + self.owner2.name + self.pet1.name + self.pet2.name + self.playDate
+
+   
+class Message(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiver')
+    message = models.CharField(max_length=1200)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.message
+
+    # class Meta:
+    #     ordering = ('timestamp',)

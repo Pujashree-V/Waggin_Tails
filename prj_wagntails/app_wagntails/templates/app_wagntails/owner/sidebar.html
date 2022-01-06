@@ -1,0 +1,69 @@
+{% load static %}
+<style>
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #dddddd;
+        ;
+        color: white;
+        text-align: center;
+        z-index: 1;
+    }
+
+    .profile-pic {
+        height: 100px;
+        width: 100px;
+        margin-left: 60px;
+        border-radius: 50px;
+    }
+</style>
+<nav class="pcoded-navbar" style="margin-top: 65px;">
+    <div class="navbar-wrapper">
+        <img class="profile-pic" src="{{request.user.owner.profile_pic.url}}">
+        <div class="navbar-content scroll-div">
+            <ul class="nav pcoded-inner-navbar">
+                <li class="nav-item pcoded-menu-caption">
+                    <label>Navigation</label>
+                </li>
+                <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project" class="nav-item">
+                    <a href="{% url 'ownerDashboard' %}" class="nav-link "><span class="pcoded-micon"><i
+                                class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span></a>
+                </li>
+                <li data-username="form elements advance componant validation masking wizard picker select"
+                    class="nav-item">
+                    <a href="{% url 'account' %}" class="nav-link "><span class="pcoded-micon"><i
+                                class="feather icon-file-text"></i></span><span class="pcoded-mtext">Update
+                            Owner</span></a>
+                </li>
+                <li data-username="Table bootstrap datatable footable" class="nav-item">
+                    <a href="{% url 'create_dog' owner.id %}" class="nav-link "><span class="pcoded-micon"><i
+                                class="feather icon-server"></i></span><span class="pcoded-mtext">Add Dog</span></a>
+                </li>
+                <li data-username="Sample Page" class="nav-item">
+                    <a href="{% url 'account' %}" class="nav-link"><span class="pcoded-micon"><i
+                                class="feather icon-sidebar"></i></span><span class="pcoded-mtext">Account
+                            Settings</span></a>
+                </li>
+                <li data-username="Sample Page" class="nav-item"><a href="{% url 'volunteers' owner.id %}"
+                        class="nav-link"><span class="pcoded-micon"><i class="feather icon-sidebar"></i></span><span
+                            class="pcoded-mtext">Lookup Volunteers</span></a></li>
+                <li data-username="Sample Page" class="nav-item"><a href="{% url 'dogs' owner.id %}"
+                        class="nav-link"><span class="pcoded-micon"><i class="feather icon-sidebar"></i></span><span
+                            class="pcoded-mtext">Lookup Dogs</span></a></li>
+                <li data-username="Sample Page" class="nav-item"><a href="{% url 'date-location' owner.id %}"
+                        class="nav-link"><span class="pcoded-micon"><i class="feather icon-sidebar"></i></span><span
+                            class="pcoded-mtext">Add Location</span></a></li>
+                <li data-username="Sample Page" class="nav-item"><a href="{% url 'chats' owner.id%}"
+                        class="nav-link"><span class="pcoded-micon"><i class="feather icon-sidebar"></i></span><span
+                            class="pcoded-mtext">Chat</span></a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="footer">
+    <div class="footer-copyright text-center py-3" style="color: black; margin-left: 130px;">© 2021 Copyright:
+        <a href="#" style="color: black;"> WaggingTails.com</a>
+    </div>
+</div>

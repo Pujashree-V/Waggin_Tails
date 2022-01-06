@@ -1,0 +1,28 @@
+{% extends 'app_wagntails/chat/volunteerChat.html' %}
+{% block hide %}{% endblock %}
+{% block messages %}
+{% for message in messages %}
+{% if message.sender == request.user %}
+<div class="chat-message-right pb-4">
+    <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+        <div class="font-weight-bold mb-1">You</div>
+        {{message}}
+    </div>
+</div>
+{% else %}
+<div class="chat-message-left pb-4">
+    <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+        <div class="font-weight-bold mb-1">{{receiver.username}}</div>
+        {{message}}
+    </div>
+</div>
+{% endif %}
+{% endfor %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
+    $(function () {
+        $('#user{{ receiver.id }}').addClass('active');
+        //Call receive function each 1 seconds to check for new messages in the database
+        setInterval(receive, 1000)
+    })
+</script>
+{% endblock %}

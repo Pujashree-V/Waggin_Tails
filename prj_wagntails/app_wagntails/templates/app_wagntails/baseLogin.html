@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>BaseLogin</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+        integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+
+
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: auto;
+            margin-left: -360px;
+
+            background: url("/static/images/baseLogin.png") 0% 0 no-repeat fixed;
+            background-size: contain;
+            background-position: center;
+        }
+
+        .user_card {
+            width: 430px;
+            margin-top: 150px;
+            margin-left: 20px;
+            margin-bottom: auto;
+            background: #ebded5;
+            position: center;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            padding: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            border-radius: 5px;
+
+        }
+
+        .form_container {
+            margin-top: 20px;
+        }
+
+        #form-title {
+            color: rgb(204, 98, 56);
+
+        }
+
+        .login_btn {
+            width: 100%;
+            background: #33ccff !important;
+            color: white !important;
+        }
+
+        .login_btn:focus {
+            box-shadow: none !important;
+            outline: 0px !important;
+        }
+
+        .login_container {
+            padding: 0 2rem;
+        }
+
+        .input-group-text {
+            background: #f7ba5b !important;
+            color: white !important;
+            border: 0 !important;
+            border-radius: 0.25rem 0 0 0.25rem !important;
+        }
+
+        .input_user,
+        .input_pass:focus {
+            box-shadow: none !important;
+            outline: 0px !important;
+        }
+
+        #messages {
+            background-color: grey;
+            color: #fff;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        .button {
+            background-color: #4CAF50;
+            /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+        .button2 {
+            background-color: #008CBA;
+            font-size: large;
+            font-weight: 700;
+        }
+
+        /* Blue */
+        .button3 {
+            background-color: #f44336;
+        }
+
+        /* Red */
+        .button4 {
+            background-color: #e7e7e7;
+            color: black;
+        }
+
+        /* Gray */
+        .button5 {
+            background-color: #555555;
+        }
+
+        /* Black */
+    </style>
+
+</head>
+{% load static %}
+
+<body>
+    <div style="position: relative; margin-top: 100px;">
+        <div class="col-md-3" style="margin-left: 1400px; position: relative;">
+            <p style="font-style: italic; font-weight: 600; font-size: large;">Are you in search of someone to help
+                take your pet on walk
+                ? Or is you pet in
+                need of
+                other 4 pawed friends to play and have fun? Then you landed in the right place. Here
+                is the one place to take care of your and your pet's needs, to keep their tails
+                wagging 😁.
+            </p>
+            <h2>WELCOME TO </h2>
+            <h1 style="size: 80px; font-weight: 700;">WAGGIN' TAILS!!</h1>
+        </div>
+        <div class="col-md-3" style="margin-left: 1420px; margin-top: 150px;">
+            <h1 style="margin-left: 80px;">Login</h1>
+            <a href="{% url 'login' %}" style="size: 40px;"><button class="button button2">Owner</button></a>
+            <a href="{% url 'loginVolunteer' %}"> <button class="button button2">Volunteer</button></a>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

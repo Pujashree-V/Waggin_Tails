@@ -1,0 +1,67 @@
+{% extends 'app_wagntails/owner/base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- [ Main Content ] start -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Add Dog</h5>
+                            </div>
+                            <div class="card-block">
+                                <form action="" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    {{ form.management_form }}
+                                    {% for field in form %}
+                                    {{field.as_p}}
+                                    <hr>
+                                    {% endfor %}
+                                    <input type="submit" name="Submit">
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ Main Content ] end -->
+                <div class="row">
+                    <div class="col-md">
+                        <div class="card card-body">
+                            <table class="table table-sm">
+                                <tr>
+                                    <th>Dog</th>
+                                    <th>Breed</th>
+                                    <th>Status</th>
+                                    <th>Note</th>
+                                    <th>Update</th>
+                                    <th>Remove</th>
+                                </tr>
+
+                                {% for dog in dogs %}
+                                <tr>
+                                    <td>{{dog.name}}</td>
+                                    <td>{{dog.breed}}</td>
+                                    <td>{{dog.status}}</td>
+                                    <td>{{dog.note}}</td>
+                                    <td><a class="btn btn-sm btn-info" href="{% url 'update_dog' dog.id %}">Update</a></td>
+                                    <td><a class="btn btn-sm btn-danger" href="{% url 'delete_dog' dog.id %}">Delete</a></td>
+                                </tr>
+                                {% endfor %}
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

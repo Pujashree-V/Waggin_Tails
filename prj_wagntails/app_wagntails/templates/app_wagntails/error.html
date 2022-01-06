@@ -1,0 +1,38 @@
+{% extends 'app_wagntails/owner/base.html' %} {% load static %} {% block content %}
+
+<br />
+<div class="row">
+  <div class="col-md-6">
+    <div class="card card-body">
+      <p>Error Page!!!</p>
+      <br />
+      <p>{{ request }}</p>
+    </div>
+  </div>
+</div>
+
+{% for field in form %}
+<tr>
+  <td>{{field}}</td>
+</tr>
+{% endfor %} {% if form.errors %}
+<div class="alert alert-danger" role="alert">
+  {% for field, errors in form.errors.items %} {% for error in errors %}
+  <b>{{ field }}</b>: {{ error }} {% endfor %} {% endfor %}
+</div>
+{% endif %} {% if form.subject.errors %}
+<ol>
+  {% for error in form.subject.errors %}
+  <li><strong>{{ error|escape }}</strong></li>
+  {% endfor %}
+</ol>
+{% endif %} 
+
+{% for field in form %}
+<div class="fieldWrapper">
+  {{ field.errors }} {{ field.label_tag }} {{ field }} {% if field.help_text %}
+  <p class="help">{{ field.help_text|safe }}</p>
+  {% endif %}
+</div>
+{% endfor %} 
+{% endblock %}

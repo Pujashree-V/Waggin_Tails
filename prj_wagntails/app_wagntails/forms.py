@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.db.models import fields
 from django.forms import ModelForm
 from django.db import models
 from .models import *
@@ -36,6 +37,11 @@ class DogForm(ModelForm):
         model = Dog
         fields = '__all__'
 
+class DogUpdateForm(ModelForm):
+    class Meta:
+        model = Dog
+        fields = '__all__'
+        exclude = ['owner']
 
 class VolunteerForm(ModelForm):
     class Meta:
@@ -60,3 +66,30 @@ class VolunteerDogForm(ModelForm):
         queryset=Dog.objects.all(),
         widget=forms.CheckboxSelectMultiple
     )
+
+class DateLocationForm(ModelForm):
+    class Meta:
+        model = DateLocation
+        fields = '__all__'
+
+
+class PlayDateForm(ModelForm):
+    class Meta:
+        model = PlayDate
+        fields = ['playDate','location','owner2','pet1','pet2']
+        exclude = ['owner1']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['location'].queryset = DateLocation.objects.all()
+        self.fields['owner2'].queryset = Owner.objects.none()
+        self.fields['pet1'].queryset = Dog.objects.none()
+        self.fields['pet2'].queryset = Dog.objects.none()
+
+class chatMessageForm(ModelForm):
+    class Meta:
+        model = Message
+        fields = '__all__'
+        # widgets = {'sender': forms.HiddenInput()}
+        # widgets = {'receiver': forms.HiddenInput()}
+        exclude = ['timestamp','is_read']

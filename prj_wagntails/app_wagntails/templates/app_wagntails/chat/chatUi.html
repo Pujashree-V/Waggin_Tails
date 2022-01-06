@@ -1,0 +1,200 @@
+{% extends 'app_wagntails/owner/base.html' %} {% block title %} Page Blank {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+<style>
+    .owl-carousel {
+        touch-action: manipulation;
+    }
+
+    body {
+        margin-top: 20px;
+    }
+
+    .chat-online {
+        color: #92a095
+    }
+
+    .chat-offline {
+        color: #e4606d
+    }
+
+    .chat-messages {
+        display: flex;
+        flex-direction: column;
+        max-height: 800px;
+        overflow-y: scroll
+    }
+
+    .chat-message-left,
+    .chat-message-right {
+        display: flex;
+        flex-shrink: 0
+    }
+
+    .chat-message-left {
+        margin-right: auto
+    }
+
+    .chat-message-right {
+        flex-direction: row-reverse;
+        margin-left: auto
+    }
+
+    .py-3 {
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+    }
+
+    .px-4 {
+        padding-right: 1.5rem !important;
+        padding-left: 1.5rem !important;
+    }
+
+    .flex-grow-0 {
+        flex-grow: 0 !important;
+    }
+
+    .border-top {
+        border-top: 1px solid #dee2e6 !important;
+    }
+</style>
+<main class="content">
+    <div class="container p-0">
+
+        <h1 class="h3 mb-3">Messages</h1>
+
+        <div class="card">
+            <div class="row g-0">
+                <div class="col-12 col-lg-5 col-xl-3 border-right">
+
+                    <!-- <div class="px-4 d-none d-md-block">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1">
+                                <input type="text" class="form-control my-3" placeholder="Search...">
+                            </div>
+                        </div>
+                    </div> -->
+                    {% for user in users %}
+                    <a href="{% url 'chat' request.user.id user.id owner.id%}"
+                        class="list-group-item list-group-item-action border-0" id="user{{ user.id }}">
+                        <!-- <div class="badge bg-success float-right">5</div> -->
+                        <div class="d-flex align-items-start">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar5.png" class="rounded-circle mr-1"
+                                alt="{{user.username}}" width="40" height="40">
+                            <div class="flex-grow-1 ml-3">
+                                {{user.username}}
+                                <div class="small"><span class="fas fa-circle chat-online"></span> Online</div>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+
+                    <hr class="d-block d-lg-none mt-1 mb-0">
+                </div>
+                <div class="col-12 col-lg-7 col-xl-9">
+                    <div class="py-2 px-4 border-bottom d-none d-lg-block">
+                        <div class="d-flex align-items-center py-1">
+                            <div class="position-relative">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar3.png"
+                                    class="rounded-circle mr-1" alt="{{receiver.username}}" width="40" height="40">
+                            </div>
+                            <div class="flex-grow-1 pl-3">
+                                <strong>{{receiver.username}}</strong>
+                                <!-- <div class="text-muted small"><em>Typing...</em></div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s9">
+                        <div class="card">
+                            <div id="board" class="section" style="height: 68vh; padding: 5px; overflow-y: scroll;">
+                                {% block messages %}
+
+                                {% endblock %}
+                            </div>
+                            <hr>
+                            {% comment %} <form id="chat-box" class="form-group {% block hide %}hide{% endblock %}"
+                                method="post"> {% endcomment %}
+                                <form action="" class="form-group {% block hide %}hide{% endblock %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="row" style="border: #92a095; border-width: 20px;">
+                                        <div class="col s11">
+                                            <div class="input-field">
+                                                <input id="message" name="message" type="text"
+                                                    placeholder="Type your message.." class="form-control"
+                                                    style="width: 600px;">
+                                            </div>
+                                            {% comment %} <div class="fieldWrapper">
+                                                <label for="{{ form.message.id_for_label }}">Message :</label>
+                                                {{ form.message }}
+                                            </div> {% endcomment %}
+                                            <input type="hidden" id="sender" name="sender" value={{sender.id}} />
+                                            <input type="hidden" id="receiver" name="receiver" value={{receiver.id}} />
+                                        </div>
+                                        <div class="col s1" style="line-height: 80px">
+                                            {% comment %} <button
+                                                class="btn btn-floating blue lighten-2 waves-effect waves-light"><i
+                                                    class="material-icons">send</i> send</button> {% endcomment %}
+                                            <input type="submit" name="Send" class="btn btn-primary"
+                                                style="margin-bottom: 40px;">
+
+                                        </div>
+                                    </div>
+                                </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% load static %}
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
+    // For receiving
+    sender_id = "{{ request.receiver.id }}";
+    sender_name = "{{ request.user.username }}"
+    //alert("sender Id" + sender_id);
+    receiver_id = "{{ request.user.id }}";
+    receiver_name = "{{receiver.username}}"
+    var message = $('#id_message');
+    console.log(message)
+    // alert("receiver Id" + receiver_id);
+
+
+    //For sending
+    $(function () {
+        alert('chat-box')
+        scrolltoend();
+        $('#chat-box').on('submit', function (event) {
+            alert('chat-box')
+            event.preventDefault();
+            var message = $('#id_message');
+            $.post('/api/messages/', '{"sender": "' + sender_name + '", "receiver": "' + receiver_name + '","message": "' + message + '" }', function (data) {
+                console.log(data);
+                alert("I am in post")
+                var box = text_box.replace('{sender}', "You");
+                box = box.replace('{message}', message);
+                $('#board').append(box);
+                scrolltoend();
+            })
+            message.val('');
+        })
+    })
+    $(function send(sender_name, receiver_name, message) {
+        alert("im in send")
+        $.post('/api/messages/', '{"sender": "' + sender_name + '", "receiver": "' + receiver_name + '","message": "' + message + '" }', function (data) {
+            console.log(data);
+            alert("I am in post")
+            var box = text_box.replace('{sender}', "You");
+            box = box.replace('{message}', message);
+            $('#board').append(box);
+            scrolltoend();
+        })
+    })
+</script>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

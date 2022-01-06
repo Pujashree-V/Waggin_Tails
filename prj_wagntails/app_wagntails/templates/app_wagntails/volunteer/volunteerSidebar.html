@@ -1,0 +1,85 @@
+{% load static %}
+<style>
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #dddddd;
+        ;
+        color: white;
+        text-align: center;
+        z-index: 1;
+    }
+
+    .profile-pic {
+        height: 100px;
+        width: 100px;
+        margin-left: 60px;
+        border-radius: 50px;
+    }
+</style>
+<nav class="pcoded-navbar" style="margin-top: 65px;">
+    <div class="navbar-wrapper">
+        <img class="profile-pic" src="{{request.user.volunteer.profile_pic.url}}">
+        <div class="navbar-content scroll-div">
+            <ul class="nav pcoded-inner-navbar">
+                <li class="nav-item pcoded-menu-caption">
+                    <label>Navigation</label>
+                </li>
+                <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project" class="nav-item">
+                    <a href="{% url 'volunteerDashboard' %}" class="nav-link "><span class="pcoded-micon"><i
+                                class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span></a>
+                </li>
+                <!-- <li class="nav-item pcoded-menu-caption">
+                    <label>UI Element</label>
+                </li>
+                <li class="nav-item pcoded-menu-caption">
+                    <label>Forms & table</label>
+                </li> -->
+                <li data-username="form elements advance componant validation masking wizard picker select"
+                    class="nav-item">
+                    <a href="{% url 'accountVolunteer' %}" class="nav-link "><span class="pcoded-micon"><i
+                                class="feather icon-file-text"></i></span><span class="pcoded-mtext">Update
+                            Volunteer</span></a>
+                </li>
+
+                <li data-username="Sample Page" class="nav-item"><a href="{% url 'volunteerChats' volunteer.id%}"
+                        class="nav-link"><span class="pcoded-micon"><i class="feather icon-sidebar"></i></span><span
+                            class="pcoded-mtext">Chat</span></a></li>
+                <!-- <li data-username="Disabled Menu" class="nav-item">
+                    <a href="{% url 'logout' %}" class="nav-link">
+                        <span class="pcoded-micon"><i class="feather icon-power"></i></span><span
+                            class="pcoded-mtext">Logout</span>
+                    </a>
+                </li> -->
+                <!-- <li class="nav-item pcoded-menu-caption">
+                    <label>More Resources</label>
+                </li> -->
+                <!-- <li data-username="Support Page" class="nav-item ">
+                    <a target="_blank" href="https://appseed.us/support" class="nav-link">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-headphones"></i>
+                        </span>
+                        <span class="pcoded-mtext">Support</span>
+                    </a>
+                </li> -->
+                <!-- <li data-username="Support Page" class="nav-item ">
+                    <a target="_blank" href="https://appseed.us/admin-dashboards/django-dashboard-dattaable-pro"
+                        class="nav-link">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-tag"></i>
+                        </span>
+                        <span class="pcoded-mtext">PRO Version</span>
+                    </a>
+                </li> -->
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="footer">
+    <div class="footer-copyright text-center py-3" style="color: black; margin-left: 130px;">© 2021 Copyright:
+        <a href="#" style="color: black;"> WaggingTails.com</a>
+    </div>
+</div>
+<!-- Footer -->
