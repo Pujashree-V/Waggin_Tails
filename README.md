@@ -1,5 +1,9 @@
 # waggintails
 
+##One stop solution for your pet needs!!!
+
+![This is an image](prj_wagntails/static/images/problematic.png)
+
 To run the application you need to follow the following steps
 
 from the folder waggintails
