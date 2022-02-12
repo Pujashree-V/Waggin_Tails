@@ -7,4 +7,4 @@ prj_wagntails/app_wagntails/management/commands/__pycache__
 prj_wagntails/app_wagntails/migrations
 prj_wagntails/db.sqlite3
 .DS_Store
-
+.idea
