@@ -18,13 +18,7 @@ fi
 python3 -m venv env
 source env/bin/activate
 python -m pip install --upgrade pip
-pip install django
-pip install django-countries
-pip install django-filter
-pip install Pillow
-pip install djangorestframework
-pip install django-widget-tweaks
-pip install whitenoise
+pip install -r requirements.txt
 
 cd prj_wagntails
 python manage.py makemigrations app_wagntails
